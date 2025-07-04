@@ -7,6 +7,7 @@ import adminRoute from "./routes/adminRoute.js";
 import cocRoute from "./routes/cocRoute.js";
 import performanceRoute from "./routes/performanceRoute.js";
 import cors from "cors";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -21,7 +22,9 @@ app.use(
   })
 );
 
+app.use(helmet());
 app.use(express.json());
+
 app.use("/student", studentRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
