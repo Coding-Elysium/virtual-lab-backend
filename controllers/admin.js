@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Admin from "../schema/AdminModel.js";
 import bcrypt from "bcrypt";
 
@@ -57,3 +58,74 @@ export const createAdmin = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getAllAdmin = async(req, res) => {
+  try {
+    const admin = await Admin.find();
+    res.status(200).json(admin);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
+export const deleteAdmin = async(req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid Admin." });
+    }
+ 
+    const admin = await Admin.findByIdAndDelete(id);
+
+    if(!admin){
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    res.status(200).json({ message: "Admin deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete Admin", error: error.message });
+  }
+}
+
+export const updateAdmin = async(req, res) => {
+  try {
+    const { id } = req.params;
+
+    const {
+      firstName,
+      lastName,
+      email,
+      subject,
+      employeeNumber,
+      position,
+      gender,
+    } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid Admin." });
+    }
+
+    const existingAdmin = await Admin.findOne({
+      $or: [{ employeeNumber }, { email }],
+      _id: { $ne: id },
+    });
+    if (existingAdmin) {
+      return res.status(409).json({ message: `LRN or email already exist` });
+    }
+
+    const admin = await Admin.findByIdAndUpdate(
+      id,
+      { firstName, lastName, email, subject, employeeNumber, position, gender },
+      { new: true }
+    );
+
+    if (!admin) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+   res.status(200).json({ message: "Admin updated successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update Admin", error: error.message });
+  }
+}
