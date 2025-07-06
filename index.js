@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4173",
-  "https://virtual-lab-frontend-deployed-hku1.vercel.app/",
+  "https://virtual-lab-frontend-deployed-hku1.vercel.app",
 ];
 
 app.use(
