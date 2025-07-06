@@ -9,7 +9,7 @@ export const loginStudentController = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ message: "Email and password are requireds" });
     }
 
     const user = await Student.findOne({ email });
@@ -32,7 +32,9 @@ export const loginAdminController = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const user = await Admin.findOne({ email });
