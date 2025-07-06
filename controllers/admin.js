@@ -13,6 +13,7 @@ export const createAdmin = async (req, res) => {
       employeeNumber,
       position,
       gender,
+      role = "admin",
     } = req.body;
 
     if (
@@ -44,6 +45,7 @@ export const createAdmin = async (req, res) => {
       employeeNumber,
       position,
       gender,
+      role,
     });
 
     await admin.save();
@@ -59,36 +61,38 @@ export const createAdmin = async (req, res) => {
   }
 };
 
-export const getAllAdmin = async(req, res) => {
+export const getAllAdmin = async (req, res) => {
   try {
-    const admin = await Admin.find();
+    const admin = await Admin.find({ role: "admin" });
     res.status(200).json(admin);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
-}
+};
 
-export const deleteAdmin = async(req, res) => {
+export const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid Admin." });
     }
- 
+
     const admin = await Admin.findByIdAndDelete(id);
 
-    if(!admin){
+    if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
     }
 
     res.status(200).json({ message: "Admin deleted successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete Admin", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete Admin", error: error.message });
   }
-}
+};
 
-export const updateAdmin = async(req, res) => {
+export const updateAdmin = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -124,8 +128,10 @@ export const updateAdmin = async(req, res) => {
       return res.status(404).json({ message: "Student not found." });
     }
 
-   res.status(200).json({ message: "Admin updated successfully." });
+    res.status(200).json({ message: "Admin updated successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Failed to update Admin", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to update Admin", error: error.message });
   }
-}
+};

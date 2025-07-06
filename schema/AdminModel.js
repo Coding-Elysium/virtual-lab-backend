@@ -43,8 +43,14 @@ const adminSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    role: {
+      type: String,
+      enum: ["admin", "superAdmin"],
+      required: true,
+      trim: true,
+    },
   },
-  { collection: "admins" }
+  { collection: "admin" }
 );
 
 adminSchema.pre("save", function (next) {
@@ -54,6 +60,7 @@ adminSchema.pre("save", function (next) {
   if (this.position) this.position = capitalizeWords(this.position);
   if (this.gender) this.gender = capitalizeWords(this.gender);
   if (this.email) this.email = this.email.toLowerCase();
+  if (this.role) this.role = this.role.toLowerCase();
 
   next();
 });
