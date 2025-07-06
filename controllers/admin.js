@@ -66,7 +66,7 @@ export const getAllAdmin = async (req, res) => {
     const admin = await Admin.find({ role: "admin" });
     res.status(200).json(admin);
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server errors", error: error.message });
   }
 };
 
