@@ -14,18 +14,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173" || "http://192.168.1.11:5173/",
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     credentials: true,
-//   })
-// );
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:4173",
+  "https://virtual-lab-frontend-deployed.vercel.app/",
+];
 
 app.use(
   cors({
-    origin: "https://virtual-lab-frontend-deployed.vercel.app/",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
