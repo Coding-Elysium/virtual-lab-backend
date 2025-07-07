@@ -59,6 +59,10 @@ export const loginAdminController = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
+        subject: user.subject,
+        employeeNumber: user.employeeNumber,
+        position: user.position,
+        gender: user.gender,
       },
       token,
     });
