@@ -9,7 +9,7 @@ export const loginStudentController = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ sucess: false, message: "Email and password are requireds" });
+        .json({ success: false, message: "Email and password are requireds" });
     }
 
     const user = await Student.findOne({ email });
@@ -19,7 +19,7 @@ export const loginStudentController = async (req, res) => {
 
     if (user.status !== "Approved") {
       return res.status(401).json({
-        sucess: false,
+        success: false,
         message: "Wait for admin to approve your account",
       });
     }
@@ -28,16 +28,16 @@ export const loginStudentController = async (req, res) => {
     if (!isMatch) {
       return res
         .status(401)
-        .json({ sucess: false, message: "Invalid credentials" });
+        .json({ success: false, message: "Invalid credentials" });
     }
 
     res
       .status(200)
-      .json({ sucess: true, message: "Login successful", data: user });
+      .json({ success: true, message: "Login successful", data: user });
   } catch (error) {
     res
       .status(500)
-      .json({ sucess: false, message: "Server error", error: error.message });
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
