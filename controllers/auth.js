@@ -28,7 +28,7 @@ export const loginStudentController = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.status(200).json({ message: "Login successful", user });
+    res.status(200).json({ message: "Login successful", data: user });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
