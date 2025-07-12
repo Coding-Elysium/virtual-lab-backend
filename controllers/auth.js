@@ -17,8 +17,7 @@ export const loginStudentController = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const status = await Student.findOne({ status });
-    if (status != "Approved") {
+    if (user.status !== "Approved") {
       return res
         .status(401)
         .json({ message: "Wait for admin to approve your account" });
