@@ -9,7 +9,7 @@ export const loginStudentController = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are requireds" });
+        .json({ sucess: false, message: "Email and password are requireds" });
     }
 
     const user = await Student.findOne({ email });
@@ -18,19 +18,26 @@ export const loginStudentController = async (req, res) => {
     }
 
     if (user.status !== "Approved") {
-      return res
-        .status(401)
-        .json({ message: "Wait for admin to approve your account" });
+      return res.status(401).json({
+        sucess: false,
+        message: "Wait for admin to approve your account",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ sucess: false, message: "Invalid credentials" });
     }
 
-    res.status(200).json({ message: "Login successful", data: user });
+    res
+      .status(200)
+      .json({ sucess: true, message: "Login successful", data: user });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ sucess: false, message: "Server error", error: error.message });
   }
 };
 
