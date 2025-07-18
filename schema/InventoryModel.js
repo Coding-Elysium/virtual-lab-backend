@@ -18,6 +18,10 @@ const itemSchema = new mongoose.Schema(
 
 const inventorySchema = new mongoose.Schema(
   {
+    take: {
+      type: String,
+      required: true,
+    },
     type: {
       type: String,
       enum: ['coc1', 'coc2', 'coc3'],
