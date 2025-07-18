@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import studentRoute from "./routes/studentRoute.js";
 import authRoute from "./routes/authRoute.js";
 import adminRoute from "./routes/adminRoute.js";
+import inventoryRoute from "./routes/inventoryRoute.js";
 import cocRoute from "./routes/cocRoute.js";
 import performanceRoute from "./routes/performanceRoute.js";
 import cors from "cors";
@@ -40,6 +41,8 @@ app.use(express.json());
 app.use("/student", studentRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
+app.use("/inventory", inventoryRoute);
+
 app.use("/coc", cocRoute);
 app.use("/performance", performanceRoute);
 
