@@ -12,6 +12,9 @@ const itemSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    category: {
+      type: String,
+    }
   },
   { _id: false }
 );
