@@ -45,6 +45,6 @@ export const getInventory = async (req, res) => {
       .json({ success: true, message: "Get Inventory Success", data });
   } catch (error) {
     console.error("Error fetching inventory:", error);
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: "Server error", data });
   }
 };
