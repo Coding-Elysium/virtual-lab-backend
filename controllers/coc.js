@@ -4,12 +4,15 @@ export const createCoc = async (req, res) => {
   try {
     const newCoc = new Coc(req.body);
     await newCoc.save();
-    res
-      .status(200)
-      .json({ message: "Student added successfully", studentId: newCoc });
+
+    res.status(200).json({
+      success: true,
+      message: "COC record created successfully",
+      data: newCoc
+    });
   } catch (error) {
-    console.error("Error adding student:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("Error creating COC:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -23,9 +26,14 @@ export const getStudentCoc = async (req, res) => {
         .json({ message: "No COC records found for this student." });
     }
 
-    res.status(200).json(cocs);
+    res.status(200).json({
+      success: true,
+      message: "COC record created successfully",
+      data: cocs
+    });
+
   } catch (error) {
     console.error("Error fetching COC records:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
