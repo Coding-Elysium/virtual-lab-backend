@@ -5,32 +5,26 @@ export const capitalizeWords = (str) =>
     .join(" ");
 
 
-export const VALID_PROCEDURES = [
-  {
-    sauce: {
-      ingredients: {
-        chicken: ["chop", "boil"],
-        lettuce: ["wash", "cut"],
-      },
-      equipments: ["kaldero", "knife", "pan"],
+export const VALID_PROCEDURES = {
+  sauce: {
+    ingredients: {
+      chicken: ["chop", "boil"],
+      lettuce: ["wash", "cut"],
     },
+    equipments: ["kaldero", "knife", "pan"],
   },
-  {
-    mainDish: {
-      ingredients: {
-        chicken: ["chop", "boil"],
-        lettuce: ["wash", "cut"],
-      },
-      equipments: ["kaldero", "knife", "pan"],
+  mainDish: {
+    ingredients: {
+      chicken: ["chop", "boil"],
+      lettuce: ["wash", "cut"],
     },
+    equipments: ["kaldero", "knife", "pan"],
   },
-  {
-    soup: {
-      ingredients: {
-        chicken: ["chop", "boil"],
-        lettuce: ["wash", "cut"],
-      },
-      equipments: ["kaldero", "knife", "pan"],
+  soup: {
+    ingredients: {
+      chicken: ["chop", "boil"],
+      lettuce: ["wash", "cut"],
     },
+    equipments: ["kaldero", "knife", "pan"],
   },
-]
+};
