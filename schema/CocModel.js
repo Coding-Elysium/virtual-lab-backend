@@ -29,6 +29,19 @@ const ingredientsSchema = new mongoose.Schema(
   { _id: false }
 )
 
+const equipmentSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String, 
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    }
+  }
+)
+
 const cocSchema = new mongoose.Schema(
   {
     type: {
@@ -39,6 +52,10 @@ const cocSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
@@ -46,6 +63,10 @@ const cocSchema = new mongoose.Schema(
     },
     ingredients: {
       type: [ingredientsSchema],
+      required: true,
+    },
+    equipments: {
+      type: [equipmentSchema],
       required: true,
     }
   }
