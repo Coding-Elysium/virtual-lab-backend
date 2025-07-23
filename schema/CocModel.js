@@ -1,13 +1,28 @@
 import mongoose from "mongoose";
 
+const actionSchema = new mongoose.Schema(
+  {
+    action:{
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true
+    }
+  },
+  { _id: false }
+)
+
+
 const ingredientsSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
     },
-    status: {
-      type: String,
+    action: {
+      type: [actionSchema],
       required: true,
     }
   },
