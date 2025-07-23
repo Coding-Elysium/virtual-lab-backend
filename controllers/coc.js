@@ -18,7 +18,15 @@ export const createCoc = async (req, res) => {
 
 export const getStudentCoc = async (req, res) => {
   try {
-    const cocs = await Coc.find({ studentId: req.params.studentId });
+    const { type } = req.query;
+
+    const query = { studentId: req.params.studentId };
+
+    if (type) {
+      query.type = type; 
+    }
+
+    const cocs = await Coc.find(query);
 
     if (!cocs || cocs.length === 0) {
       return res
@@ -28,15 +36,20 @@ export const getStudentCoc = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "COC record created successfully",
+      message: "COC record(s) fetched successfully",
       data: cocs
     });
 
   } catch (error) {
     console.error("Error fetching COC records:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message
+    });
   }
 };
+
 
 
 
