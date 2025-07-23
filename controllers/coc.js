@@ -1,14 +1,6 @@
+import { VALID_PROCEDURES } from "../helpers/helpers.js";
 import Coc from "../schema/CocModel.js";
 
-const VALID_PROCEDURES = {
-  sandwich: {
-    ingredients: {
-      chicken: ["chop", "boil"],
-      lettuce: ["wash", "cut"],
-    },
-    equipments: ["kaldero", "knife", "pan"],
-  },
-};
 
 export const createCoc = async (req, res) => {
   try {
