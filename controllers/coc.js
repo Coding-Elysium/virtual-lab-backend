@@ -12,7 +12,7 @@ export const createCoc = async (req, res) => {
 
     if (!rules) {
       procedureStatus = "inappropriate";
-      invalidReasons.push(`You input invalid ingredients to make ${category}`);
+      invalidReasons.push(`Not in category or valid procedure`);
     } else {
       for (const ing of ingredients) {
         if (!rules.ingredients[ing.name]) {
