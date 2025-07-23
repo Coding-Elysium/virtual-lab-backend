@@ -68,7 +68,18 @@ const cocSchema = new mongoose.Schema(
     equipments: {
       type: [equipmentSchema],
       required: true,
-    }
+    },
+
+    // 🆕 NEW FIELDS:
+    procedureStatus: {
+      type: String,
+      enum: ["valid", "inappropriate"],
+      default: "valid",
+    },
+    invalidReasons: {
+      type: [String],
+      default: [],
+    },
   }
 )
 
