@@ -9,6 +9,10 @@ const actionSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true
+    },
+    tools: {
+      type: String, 
+      required: true,
     }
   },
   { _id: false }
@@ -39,7 +43,8 @@ const equipmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     }
-  }
+  },
+  { _id: false }
 )
 
 const cocSchema = new mongoose.Schema(
@@ -70,7 +75,6 @@ const cocSchema = new mongoose.Schema(
       required: true,
     },
 
-    // 🆕 NEW FIELDS:
     procedureStatus: {
       type: String,
       enum: ["valid", "inappropriate"],
