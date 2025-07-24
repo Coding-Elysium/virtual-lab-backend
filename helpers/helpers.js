@@ -8,23 +8,42 @@ export const capitalizeWords = (str) =>
 export const VALID_PROCEDURES = {
   sauce: {
     ingredients: {
-      chicken: ["chop", "boil"],
-      lettuce: ["wash", "cut"],
+      chicken: {
+        chop: ["knife"],
+        boil: ["pot"]
+      },
+      lettuce: {
+        wash: ["hand", "water"],
+        cut: ["knife"]
+      }
     },
     equipments: ["kaldero", "knife", "pan"],
   },
   mainDish: {
     ingredients: {
-      chicken: ["chop", "boil"],
-      lettuce: ["wash", "cut"],
+      chicken: {
+        chop: ["knife"],
+        boil: ["pot"]
+      },
+      lettuce: {
+        wash: ["hand", "water"],
+        cut: ["knife"]
+      }
     },
     equipments: ["kaldero", "knife", "pan"],
   },
   soup: {
     ingredients: {
-      chicken: ["chop", "boil"],
-      lettuce: ["wash", "cut"],
+      chicken: {
+        chop: ["knife"],
+        boil: ["pot"]
+      },
+      lettuce: {
+        wash: ["hand", "water"],
+        cut: ["knife"]
+      }
     },
     equipments: ["kaldero", "knife", "pan"],
   },
 };
+

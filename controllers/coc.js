@@ -20,9 +20,15 @@ export const createCoc = async (req, res) => {
           invalidReasons.push(`Ingredient "${ing.name}" is not allowed.`);
         } else {
           for (const act of ing.action) {
-            if (!rules.ingredients[ing.name].includes(act.action)) {
+            const allowedActions = rules.ingredients[ing.name];
+            if (!allowedActions || !allowedActions[act.action]) {
               procedureStatus = "inappropriate";
               invalidReasons.push(`Invalid action "${act.action}" for "${ing.name}".`);
+            } else if (act.tools && !allowedActions[act.action].includes(act.tools)) {
+              procedureStatus = "inappropriate";
+              invalidReasons.push(
+                `Tool "${act.tools}" is not valid for action "${act.action}" on "${ing.name}".`
+              );
             }
           }
         }
