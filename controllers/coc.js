@@ -24,10 +24,10 @@ export const createCoc = async (req, res) => {
             if (!allowedActions || !allowedActions[act.actions]) {
               procedureStatus = "inappropriate";
               invalidReasons.push(`Invalid action "${act.action}" for "${ing.name}".`);
-            } else if (act.tools && !allowedActions[act.action].includes(act.tools)) {
+            } else if (act.tool && !allowedActions[act.action].includes(act.tool)) {
               procedureStatus = "inappropriate";
               invalidReasons.push(
-                `Tool "${act.tools}" is not valid for action "${act.action}" on "${ing.name}".`
+                `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
               );
             }
           }

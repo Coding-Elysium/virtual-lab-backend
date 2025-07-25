@@ -10,7 +10,7 @@ const actionSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    tools: {
+    tool: {
       type: String, 
       required: true,
     }
