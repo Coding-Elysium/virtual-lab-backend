@@ -25,7 +25,7 @@ const ingredientsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    action: {
+    actions: {
       type: [actionSchema],
       required: true,
     }

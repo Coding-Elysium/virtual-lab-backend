@@ -19,11 +19,11 @@ export const createCoc = async (req, res) => {
           procedureStatus = "inappropriate";
           invalidReasons.push(`Ingredient "${ing.name}" is not allowed.`);
         } else {
-          for (const act of ing.action) {
+          for (const act of ing.actions) {
             const allowedActions = rules.ingredients[ing.name];
-            if (!allowedActions || !allowedActions[act.action]) {
+            if (!allowedActions || !allowedActions[act.actions]) {
               procedureStatus = "inappropriate";
-              invalidReasons.push(`Invalid action "${act.action}" for "${ing.name}".`);
+              invalidReasons.push(`Invalid action "${act.actions}" for "${ing.name}".`);
             } else if (act.tools && !allowedActions[act.action].includes(act.tools)) {
               procedureStatus = "inappropriate";
               invalidReasons.push(
