@@ -1,7 +1,6 @@
 import { VALID_PROCEDURES } from "../helpers/helpers.js";
 import Coc from "../schema/CocModel.js";
 
-
 export const createCoc = async (req, res) => {
   try {
     const { category, ingredients, equipments } = req.body;
@@ -23,8 +22,13 @@ export const createCoc = async (req, res) => {
             const allowedActions = rules.ingredients[ing.name];
             if (!allowedActions || !allowedActions[act.actions]) {
               procedureStatus = "inappropriate";
-              invalidReasons.push(`Invalid action "${act.action}" for "${ing.name}".`);
-            } else if (act.tool && !allowedActions[act.action].includes(act.tool)) {
+              invalidReasons.push(
+                `Invalid action "${act.action}" for "${ing.name}".`
+              );
+            } else if (
+              act.tool &&
+              !allowedActions[act.action].includes(act.tool)
+            ) {
               procedureStatus = "inappropriate";
               invalidReasons.push(
                 `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
@@ -50,12 +54,12 @@ export const createCoc = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: procedureStatus === "valid"
-        ? "COC created successfully"
-        : "COC created with inappropriate procedure",
+      message:
+        procedureStatus === "valid"
+          ? "COC created successfully"
+          : "COC created with inappropriate procedure",
       data: newCoc,
     });
-
   } catch (error) {
     console.error("Error creating COC:", error);
     res.status(500).json({
@@ -89,7 +93,7 @@ export const getStudentCoc = async (req, res) => {
     const query = { studentId: req.params.studentId };
 
     if (type) {
-      query.type = type; 
+      query.type = type;
     }
 
     const cocs = await Coc.find(query);
@@ -103,21 +107,14 @@ export const getStudentCoc = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "COC record(s) fetched successfully",
-      data: cocs
+      data: cocs,
     });
-
   } catch (error) {
     console.error("Error fetching COC records:", error);
     res.status(500).json({
       success: false,
       message: "Server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
-
-
-
-
-
-
