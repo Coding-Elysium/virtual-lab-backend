@@ -19,6 +19,7 @@ export const VALID_PROCEDURES = {
       },
       vinegar: {
         measure: ["spoon"],
+        sprinkle: ["shaker"],
       },
       tomatoPaste: {
         scoop: ["spoon"],
