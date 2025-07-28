@@ -20,7 +20,7 @@ export const createCoc = async (req, res) => {
         } else {
           for (const act of ing.actions) {
             const allowedActions = rules.ingredients[ing.name];
-            if (!allowedActions || !allowedActions[act.actions]) {
+            if (!allowedActions || !allowedActions[act.action]) {
               procedureStatus = "inappropriate";
               invalidReasons.push(
                 `Invalid action "${act.action}" for "${ing.name}".`
