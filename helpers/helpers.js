@@ -7,9 +7,6 @@ export const capitalizeWords = (str) =>
 export const VALID_PROCEDURES = {
   sauce: {
     ingredients: {
-      sauce: {
-        measure: ["spoon"],
-      },
       garlic: {
         peel: ["hand"],
         chop: ["knife"],
