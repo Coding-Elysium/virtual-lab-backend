@@ -7,7 +7,7 @@ const platingSchema = new mongoose.Schema(
         required: true,
     },
     endDate: {
-        type: String,
+        type: Date,
         default: Date.now,
     },
     studentId: {
