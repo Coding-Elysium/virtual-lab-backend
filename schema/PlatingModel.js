@@ -1,29 +1,29 @@
 import mongoose from "mongoose";
-import { capitalizeWords } from "../helpers/helpers.js";
 
 const platingSchema = new mongoose.Schema(
   {
-    lrn: {
+    image: {
+        type: String,
+        required: true,
+    },
+    endDate: {
+        type: String,
+        default: Date.now,
+    },
+    studentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+        required: true,
+    },
+    type: {
       type: String,
+      enum: ["coc1", "coc2", "coc3"],
       required: true,
-      trim: true,
-      unique: true,
     },
   },
   { collection: "plating" }
 );
 
-platingSchema.pre("save", function (next) {
-  if (this.firstName) this.firstName = capitalizeWords(this.firstName);
-  if (this.lastName) this.lastName = capitalizeWords(this.lastName);
-  if (this.email) this.email = this.email.toLowerCase();
-  if (this.gradeLevel) this.gradeLevel = capitalizeWords(this.gradeLevel);
-  if (this.status) this.status = capitalizeWords(this.status);
-  if (this.gender) this.gender = capitalizeWords(this.gender);
-
-  next();
-});
-
-const Plating = mongoose.model("Student", studentSchema);
+const Plating = mongoose.model("Plating", platingSchema);
 
 export default Plating;

@@ -39,6 +39,11 @@ const inventorySchema = new mongoose.Schema(
       type: [itemSchema],
       required: true,
     },
+    startDate: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    }
   },
   { collection: "inventory" }
 );
