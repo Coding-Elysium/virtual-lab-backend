@@ -70,6 +70,10 @@ const cocSchema = new mongoose.Schema(
       type: [ingredientsSchema],
       required: true,
     },
+    image: {
+      type: String,
+      required: true
+    },  
     equipments: {
       type: [equipmentSchema],
       required: true,
