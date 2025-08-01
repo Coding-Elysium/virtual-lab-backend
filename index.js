@@ -7,6 +7,7 @@ import adminRoute from "./routes/adminRoute.js";
 import inventoryRoute from "./routes/inventoryRoute.js";
 import cocRoute from "./routes/cocRoute.js";
 import performanceRoute from "./routes/performanceRoute.js";
+import platingRoute from "./routes/platingRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 
@@ -42,7 +43,7 @@ app.use("/student", studentRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
 app.use("/inventory", inventoryRoute);
-
+app.use("/plating", platingRoute);
 app.use("/coc", cocRoute);
 app.use("/performance", performanceRoute);
 
