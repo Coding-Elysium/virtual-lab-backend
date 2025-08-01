@@ -1,4 +1,4 @@
-import Plating from "../schema/PlatingModel"
+import Plating from "../schema/PlatingModel.js"
 
 export const addPlating = async(req, res) => {
     try {
