@@ -20,7 +20,14 @@ export const addPlating = async(req, res) => {
 export const getPlating = async (req, res) => {
     try {
         const { studentId } = req.params;
-        const result = await Plating.find({ studentId });
+        const { type } = req.query;
+
+        const query = { studentId };
+        if (type) {
+            query.type = type;
+        }
+
+        const result = await Plating.find(query);
 
         res.status(200).json({
             success: true,
