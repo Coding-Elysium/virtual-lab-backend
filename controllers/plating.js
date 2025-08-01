@@ -11,7 +11,7 @@ export const addPlating = async(req, res) => {
             
         await platingData.save();
         
-        res.status(201).json({success: true, message: "Successfully add plating" });
+        res.status(201).json({success: true, message: "Successfully add a plating" });
     } catch (error) {
         res.status(500).json({success:false, message: "Server error", error: error.message });
     }
