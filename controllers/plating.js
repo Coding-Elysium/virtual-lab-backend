@@ -16,3 +16,22 @@ export const addPlating = async(req, res) => {
         res.status(500).json({success:false, message: "Server error", error: error.message });
     }
 }
+
+export const getPlating = async (req, res) => {
+    try {
+        const { studentId } = req.params;
+        const result = await Plating.find({ studentId });
+
+        res.status(200).json({
+            success: true,
+            message: "Successfully retrieved plating data",
+            result
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+    }
+};
