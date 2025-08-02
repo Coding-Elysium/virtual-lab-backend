@@ -11,97 +11,42 @@ const performanceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dimension: {
-    useTools: {
-      type: Number,
-      min: 0,
-      max: 4,
-      required: true,
-    },
-    procedure: {
-      type: Number,
-      min: 0,
-      max: 4,
-      required: true,
-    },
-    safety: {
-      type: Number,
-      min: 0,
-      max: 4,
-      required: true,
-    },
-    product: {
-      type: Number,
-      min: 0,
-      max: 4,
-      required: true,
-    },
-    timeManagement: {
-      type: Number,
-      min: 0,
-      max: 4,
-      required: true,
-    },
-    totalScore: {
-      type: Number,
-      required: true,
-    },
-  },
-  criteria: {
-    properBalance: {
-      type: Number,
-      min: 0,
-      max: 5,
-      required: true,
-    },
-    useOfColor: {
-      type: Number,
-      min: 0,
-      max: 5,
-      required: true,
-    },
-    shape: {
-      type: Number,
-      min: 0,
-      max: 5,
-      required: true,
-    },
-    useOfGarnish: {
-      type: Number,
-      min: 0,
-      max: 5,
-      required: true,
-    },
-    overallPresentation: {
-      type: Number,
-      min: 0,
-      max: 5,
-      required: true,
-    },
-    totalScore: {
-      type: Number,
-      required: true,
-    },
-    comments: {
-      type: String,
-      default: "",
-    },
+  useTools: { type: Number, min: 0, max: 4, required: true },
+  procedure: { type: Number, min: 0, max: 4, required: true },
+  safety: { type: Number, min: 0, max: 4, required: true },
+  product: { type: Number, min: 0, max: 4, required: true },
+  timeManagement: { type: Number, min: 0, max: 4, required: true },
+  properBalance: { type: Number, min: 0, max: 5, required: true },
+  useOfColor: { type: Number, min: 0, max: 5, required: true },
+  shape: { type: Number, min: 0, max: 5, required: true },
+  useOfGarnish: { type: Number, min: 0, max: 5, required: true },
+  overallPresentation: { type: Number, min: 0, max: 5, required: true },
+  comments: { type: String, default: "" },
+
+  averageScore: {
+    type: Number,
+    default: 0,
   },
 });
 
 performanceSchema.pre("save", function (next) {
-  const c = this.criteria;
-  const d = this.dimension;
+  const scores = [
+    this.useTools,
+    this.procedure,
+    this.safety,
+    this.product,
+    this.timeManagement,
+    this.properBalance,
+    this.useOfColor,
+    this.shape,
+    this.useOfGarnish,
+    this.overallPresentation,
+  ];
 
-  c.totalScore =
-    c.properBalance +
-    c.useOfColor +
-    c.shape +
-    c.useOfGarnish +
-    c.overallPresentation;
+  const total = scores.reduce((sum, val) => sum + val, 0);
+  const avg = total / scores.length;
 
-  d.totalScore =
-    d.useTools + d.procedure + d.safety + d.product + d.timeManagement;
+  this.averageScore = parseFloat(avg.toFixed(2));
 
   next();
 });
