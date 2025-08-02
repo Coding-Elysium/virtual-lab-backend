@@ -6,9 +6,9 @@ const performanceSchema = new mongoose.Schema({
     ref: "Student",
     required: true,
   },
-  cocId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Coc",
+  type: {
+    enum: ["coc1", "coc2", "coc3"],
+    type: String,
     required: true,
   },
   dimension: {
