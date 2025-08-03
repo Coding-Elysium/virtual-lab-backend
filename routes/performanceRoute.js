@@ -8,6 +8,6 @@ import {
 const router = express.Router();
 router.post("/create", createPerformance);
 router.get("/read/:studentId", getPerformance);
-router.put("/update/:studentId", updatePerformance);
+router.put("/update/:id", updatePerformance);
 
 export default router;

@@ -40,15 +40,15 @@ export const getPerformance = async (req, res) => {
 
 export const updatePerformance = async (req, res) => {
   try {
-    const { studentId, type } = req.params;
+    const { id } = req.params;
     const updates = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(studentId)) {
-      return res.status(400).json({ message: "Invalid studentId" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid id" });
     }
 
     const performance = await Performance.findOneAndUpdate(
-      { studentId, type },
+      { _id: id },
       updates,
       { new: true }
     );
