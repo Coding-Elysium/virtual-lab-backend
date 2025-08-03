@@ -37,3 +37,28 @@ export const getPerformance = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const updatePerformance = async (req, res) => {
+  try {
+    const { studentId, type } = req.params;
+    const updates = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(studentId)) {
+      return res.status(400).json({ message: "Invalid studentId" });
+    }
+
+    const performance = await Performance.findOneAndUpdate(
+      { studentId, type },
+      updates,
+      { new: true }
+    );
+
+    if (!performance) {
+      return res.status(404).json({ message: "Performance not found" });
+    }
+
+    res.status(200).json(performance);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
