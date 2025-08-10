@@ -168,6 +168,7 @@ export const VALID_PROCEDURES = {
       cabbage: {
         wash: ["hand", "water"],
         chop: ["knife"],
+        peel: ["paringKnife"],
       },
       ginger: {
         peel: ["knife"],
@@ -196,6 +197,15 @@ export const VALID_PROCEDURES = {
         pour: ["cup"],
       },
     },
-    equipments: ["knife", "pan", "bowl", "fork", "spoon", "cup"],
+    equipments: [
+      "knife",
+      "pan",
+      "bowl",
+      "fork",
+      "spoon",
+      "cup",
+      "Gloves",
+      "Apron",
+    ],
   },
 };
