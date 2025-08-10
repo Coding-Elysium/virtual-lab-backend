@@ -3,7 +3,7 @@ import Coc from "../schema/CocModel.js";
 
 export const createCoc = async (req, res) => {
   try {
-    const { category, ingredients, equipments } = req.body;
+    const { category, ingredients = [], equipments = [] } = req.body;
     const rules = VALID_PROCEDURES[category];
 
     let procedureStatus = "valid";
@@ -11,29 +11,32 @@ export const createCoc = async (req, res) => {
 
     if (!rules) {
       procedureStatus = "inappropriate";
-      invalidReasons.push(`Not in category or valid procedure`);
+      invalidReasons.push(
+        `Category "${category}" is not in the valid procedures list.`
+      );
     } else {
       for (const ing of ingredients) {
-        if (!rules.ingredients[ing.name]) {
+        const allowedIngredient = rules.ingredients[ing.name];
+        if (!allowedIngredient) {
           procedureStatus = "inappropriate";
-          invalidReasons.push(`Ingredient "${ing.name}" is not allowed.`);
-        } else {
-          for (const act of ing.actions) {
-            const allowedActions = rules.ingredients[ing.name];
-            if (!allowedActions || !allowedActions[act.action]) {
-              procedureStatus = "inappropriate";
-              invalidReasons.push(
-                `Invalid action "${act.action}" for "${ing.name}".`
-              );
-            } else if (
-              act.tool &&
-              !allowedActions[act.action].includes(act.tool)
-            ) {
-              procedureStatus = "inappropriate";
-              invalidReasons.push(
-                `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
-              );
-            }
+          invalidReasons.push(
+            `Ingredient "${ing.name}" is not allowed for category "${category}".`
+          );
+          continue;
+        }
+
+        for (const act of ing.actions || []) {
+          const allowedTools = allowedIngredient[act.action];
+          if (!allowedTools) {
+            procedureStatus = "inappropriate";
+            invalidReasons.push(
+              `Invalid action "${act.action}" for ingredient "${ing.name}".`
+            );
+          } else if (act.tool && !allowedTools.includes(act.tool)) {
+            procedureStatus = "inappropriate";
+            invalidReasons.push(
+              `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
+            );
           }
         }
       }
@@ -41,7 +44,9 @@ export const createCoc = async (req, res) => {
       for (const eq of equipments) {
         if (!rules.equipments.includes(eq.name)) {
           procedureStatus = "inappropriate";
-          invalidReasons.push(`Equipment "${eq.name}" is not allowed.`);
+          invalidReasons.push(
+            `Equipment "${eq.name}" is not allowed for category "${category}".`
+          );
         }
       }
     }
