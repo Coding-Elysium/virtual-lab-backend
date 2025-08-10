@@ -21,6 +21,26 @@ export const createCoc = async (req, res) => {
       });
     }
 
+    // Category validation based on type
+    let allowedCategory = [];
+    if (type === "coc1") {
+      allowedCategory = ["mainDish", "sauce", "soup"];
+    } else if (type === "coc2") {
+      allowedCategory = ["appetizer", "salad", "saladAndDressing"];
+    } else if (type === "coc3") {
+      allowedCategory = ["sandwich"];
+    }
+
+    if (!allowedCategory.includes(category)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedCategory.join(
+          ", "
+        )}.`,
+      });
+    }
+
+    // Check if COC for this type already exists for the student
     const existingCoc = await Coc.findOne({ type, studentId });
     if (existingCoc) {
       return res.status(400).json({
@@ -29,6 +49,7 @@ export const createCoc = async (req, res) => {
       });
     }
 
+    // Validation from VALID_PROCEDURES
     const rules = VALID_PROCEDURES[category];
     let procedureStatus = "valid";
     let invalidReasons = [];
@@ -75,7 +96,7 @@ export const createCoc = async (req, res) => {
       }
     }
 
-    // Step 4: Create the COC
+    // Create the COC
     req.body.procedureStatus = procedureStatus;
     req.body.invalidReasons = invalidReasons;
 
