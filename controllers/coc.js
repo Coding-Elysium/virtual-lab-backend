@@ -21,7 +21,6 @@ export const createCoc = async (req, res) => {
       });
     }
 
-    // Category validation based on type
     let allowedCategory = [];
     if (type === "coc1") {
       allowedCategory = ["mainDish", "sauce", "soup"];
@@ -40,16 +39,15 @@ export const createCoc = async (req, res) => {
       });
     }
 
-    // Check if COC for this type already exists for the student
-    const existingCoc = await Coc.findOne({ type, studentId });
+    // ✅ Check if this category for this type is already submitted by the student
+    const existingCoc = await Coc.findOne({ type, category, studentId });
     if (existingCoc) {
       return res.status(400).json({
         success: false,
-        message: `Your ${type} has already been submitted.`,
+        message: `You have already submitted "${category}" for ${type}.`,
       });
     }
 
-    // Validation from VALID_PROCEDURES
     const rules = VALID_PROCEDURES[category];
     let procedureStatus = "valid";
     let invalidReasons = [];
@@ -96,7 +94,6 @@ export const createCoc = async (req, res) => {
       }
     }
 
-    // Create the COC
     req.body.procedureStatus = procedureStatus;
     req.body.invalidReasons = invalidReasons;
 
