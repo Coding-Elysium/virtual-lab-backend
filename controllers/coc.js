@@ -3,9 +3,33 @@ import Coc from "../schema/CocModel.js";
 
 export const createCoc = async (req, res) => {
   try {
-    const { category, ingredients = [], equipments = [] } = req.body;
-    const rules = VALID_PROCEDURES[category];
+    const {
+      type,
+      studentId,
+      category,
+      ingredients = [],
+      equipments = [],
+    } = req.body;
 
+    const allowedTypes = ["coc1", "coc2", "coc3"];
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid type "${type}". Must be one of ${allowedTypes.join(
+          ", "
+        )}.`,
+      });
+    }
+
+    const existingCoc = await Coc.findOne({ type, studentId });
+    if (existingCoc) {
+      return res.status(400).json({
+        success: false,
+        message: `Your ${type} has already been submitted.`,
+      });
+    }
+
+    const rules = VALID_PROCEDURES[category];
     let procedureStatus = "valid";
     let invalidReasons = [];
 
@@ -51,6 +75,7 @@ export const createCoc = async (req, res) => {
       }
     }
 
+    // Step 4: Create the COC
     req.body.procedureStatus = procedureStatus;
     req.body.invalidReasons = invalidReasons;
 

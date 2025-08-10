@@ -3,21 +3,39 @@ import Plating from "../schema/PlatingModel.js";
 export const addPlating = async (req, res) => {
   try {
     const { image, studentId, type } = req.body;
-    const platingData = new Plating({
-      image,
-      studentId,
-      type,
-    });
 
+    const allowedTypes = ["coc1", "coc2", "coc3"];
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid type "${type}". Must be one of ${allowedTypes.join(
+          ", "
+        )}.`,
+      });
+    }
+
+    const existingPlating = await Plating.findOne({ type, studentId });
+    if (existingPlating) {
+      return res.status(400).json({
+        success: false,
+        message: `Your plating for "${type}" has already been submitted.`,
+      });
+    }
+
+    const platingData = new Plating({ image, studentId, type });
     await platingData.save();
 
-    res
-      .status(201)
-      .json({ success: true, message: "Successfully add a plating" });
+    res.status(201).json({
+      success: true,
+      message: "Successfully added a plating",
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server error", error: error.message });
+    console.error("Error adding plating:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
