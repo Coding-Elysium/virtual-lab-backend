@@ -23,10 +23,8 @@ const performanceSchema = new mongoose.Schema({
   overallPresentation: { type: Number, min: 0, max: 5, required: true },
   comments: { type: String, default: "" },
 
-  averageScore: {
-    type: Number,
-    default: 0,
-  },
+  averageScore: { type: Number, default: 0 },
+  starRating: { type: Number, default: 1 },
 });
 
 performanceSchema.pre("save", function (next) {
@@ -47,6 +45,14 @@ performanceSchema.pre("save", function (next) {
   const avg = total / scores.length;
 
   this.averageScore = parseFloat(avg.toFixed(2));
+
+  if (this.averageScore >= 4) {
+    this.starRating = 3;
+  } else if (this.averageScore >= 2.5) {
+    this.starRating = 2;
+  } else {
+    this.starRating = 1;
+  }
 
   next();
 });
