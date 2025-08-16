@@ -27,7 +27,7 @@ export const addPlating = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Successfully added a plating",
+      message: `Successfully added a plating to ${type}`,
     });
   } catch (error) {
     console.error("Error adding plating:", error);
