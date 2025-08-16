@@ -1,4 +1,5 @@
 import Plating from "../schema/PlatingModel.js";
+import Stage from "../schema/StageSchema.js";
 
 export const addPlating = async (req, res) => {
   try {
