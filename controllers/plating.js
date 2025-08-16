@@ -25,9 +25,23 @@ export const addPlating = async (req, res) => {
     const platingData = new Plating({ image, studentId, type });
     await platingData.save();
 
+    const stageData = await Stage.findOneAndUpdate(
+      { studentId },
+      { [type]: "complete" },
+      { new: true }
+    );
+
+    if (!stageData) {
+      return res.status(404).json({
+        success: false,
+        message: "Stage data not found for this student",
+      });
+    }
+
     res.status(201).json({
       success: true,
-      message: `Successfully added a plating to ${type}`,
+      message: `Successfully added a plating to ${type} and marked stage as complete`,
+      updatedStage: stageData,
     });
   } catch (error) {
     console.error("Error adding plating:", error);

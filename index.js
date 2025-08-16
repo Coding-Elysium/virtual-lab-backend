@@ -46,6 +46,7 @@ app.use("/inventory", inventoryRoute);
 app.use("/plating", platingRoute);
 app.use("/coc", cocRoute);
 app.use("/performance", performanceRoute);
+app.use("/stage", stageRoute);
 
 mongoose
   .connect(process.env.MONGO_URI, {

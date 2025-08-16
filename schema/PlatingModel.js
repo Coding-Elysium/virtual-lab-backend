@@ -3,17 +3,17 @@ import mongoose from "mongoose";
 const platingSchema = new mongoose.Schema(
   {
     image: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     endDate: {
-        type: Date,
-        default: Date.now,
+      type: Date,
+      default: Date.now,
     },
     studentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Student",
-        required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+      required: true,
     },
     type: {
       type: String,
