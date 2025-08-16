@@ -32,7 +32,13 @@ export const getPerformance = async (req, res) => {
       return res.status(404).json({ message: "Performance not found" });
     }
 
-    res.status(200).json(performance);
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Performance retrieved successfully",
+        data: performance,
+      });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
