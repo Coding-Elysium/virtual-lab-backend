@@ -3,6 +3,6 @@ import { stageController } from "../controllers/stage.js";
 
 const router = express.Router();
 
-router.get("/stage", stageController);
+router.get("/read", stageController);
 
 export default router;
