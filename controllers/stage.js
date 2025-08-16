@@ -1,4 +1,4 @@
-import Stage from "../schema/StageSchema";
+import Stage from "../schema/StageSchema.js";
 
 export const stageController = async (req, res) => {
   try {
