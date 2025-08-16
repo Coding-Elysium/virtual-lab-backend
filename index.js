@@ -8,6 +8,7 @@ import inventoryRoute from "./routes/inventoryRoute.js";
 import cocRoute from "./routes/cocRoute.js";
 import performanceRoute from "./routes/performanceRoute.js";
 import platingRoute from "./routes/platingRoute.js";
+import stageRoute from "./routes/stageRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 
