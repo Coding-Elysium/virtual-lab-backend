@@ -27,31 +27,50 @@ const performanceSchema = new mongoose.Schema({
   starRating: { type: Number, default: 1 },
 });
 
-performanceSchema.pre("save", function (next) {
+function calculateScores(doc) {
   const scores = [
-    this.useTools,
-    this.procedure,
-    this.safety,
-    this.product,
-    this.timeManagement,
-    this.properBalance,
-    this.useOfColor,
-    this.shape,
-    this.useOfGarnish,
-    this.overallPresentation,
+    doc.useTools,
+    doc.procedure,
+    doc.safety,
+    doc.product,
+    doc.timeManagement,
+    doc.properBalance,
+    doc.useOfColor,
+    doc.shape,
+    doc.useOfGarnish,
+    doc.overallPresentation,
   ];
 
   const total = scores.reduce((sum, val) => sum + val, 0);
   const avg = total / scores.length;
 
-  this.averageScore = parseFloat(avg.toFixed(2));
+  doc.averageScore = parseFloat(avg.toFixed(2));
+  doc.starRating = avg >= 4 ? 3 : avg >= 2.5 ? 2 : 1;
+}
 
-  if (this.averageScore >= 4) {
-    this.starRating = 3;
-  } else if (this.averageScore >= 2.5) {
-    this.starRating = 2;
-  } else {
-    this.starRating = 1;
+performanceSchema.pre("save", function (next) {
+  calculateScores(this);
+  next();
+});
+
+performanceSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate();
+
+  const target = update.$set || update;
+
+  if (
+    target.useTools !== undefined ||
+    target.procedure !== undefined ||
+    target.safety !== undefined ||
+    target.product !== undefined ||
+    target.timeManagement !== undefined ||
+    target.properBalance !== undefined ||
+    target.useOfColor !== undefined ||
+    target.shape !== undefined ||
+    target.useOfGarnish !== undefined ||
+    target.overallPresentation !== undefined
+  ) {
+    calculateScores(target);
   }
 
   next();
