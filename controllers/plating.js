@@ -24,23 +24,14 @@ export const addPlating = async (req, res) => {
     }
 
     const platingData = new Plating({ image, studentId, type });
+
     await platingData.save();
 
-    let stageData = await Stage.findOne({ studentId });
-
-    if (!stageData) {
-      stageData = new Stage({
-        studentId,
-        coc1: "pending",
-        coc2: "pending",
-        coc3: "pending",
-        [type]: "complete",
-      });
-      await stageData.save();
-    } else {
-      stageData[type] = "complete";
-      await stageData.save();
-    }
+    await Stage.findOneAndUpdate(
+      { studentId },
+      { $set: { [type]: "completed" } },
+      { new: true } 
+    );
 
     res.status(201).json({
       success: true,

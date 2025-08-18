@@ -1,6 +1,7 @@
 import Student from "../schema/StudentModel.js";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
+import Stage from "../schema/StageSchema.js";
 
 export const createStudent = async (req, res) => {
   try {
@@ -47,9 +48,17 @@ export const createStudent = async (req, res) => {
       status,
     });
 
-    await student.save();
-
     const { password: _, ...studentData } = student.toObject();
+
+    const stage = new Stage({
+      studentId: student._id,
+      coc1: "pending",
+      coc2: "pending",
+      coc3: "pending",
+    });
+
+    await student.save();
+    await stage.save();
 
     res.status(200).json({
       success: true,
