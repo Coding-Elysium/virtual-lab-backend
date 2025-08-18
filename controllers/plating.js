@@ -9,7 +9,7 @@ export const addPlating = async (req, res) => {
     if (!allowedTypes.includes(type)) {
       return res.status(400).json({
         success: false,
-        message: `Invalid type "${type}". Must be one of ${allowedTypes.join(
+        message: `Invalid type ${type}. Must be one of ${allowedTypes.join(
           ", "
         )}.`,
       });
@@ -19,7 +19,7 @@ export const addPlating = async (req, res) => {
     if (existingPlating) {
       return res.status(400).json({
         success: false,
-        message: `Your plating for "${type}" has already been submitted.`,
+        message: `Your plating for ${type} has already been submitted.`,
       });
     }
 
