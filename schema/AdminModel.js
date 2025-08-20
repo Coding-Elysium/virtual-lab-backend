@@ -13,7 +13,7 @@ const adminSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    email: {
+    username: {
       type: String,
       required: true,
       lowercase: true,
@@ -59,7 +59,7 @@ adminSchema.pre("save", function (next) {
   if (this.subject) this.subject = capitalizeWords(this.subject);
   if (this.position) this.position = capitalizeWords(this.position);
   if (this.gender) this.gender = capitalizeWords(this.gender);
-  if (this.email) this.email = this.email.toLowerCase();
+  if (this.username) this.username = this.username.toLowerCase();
   if (this.role) this.role = this.role.toLowerCase();
 
   next();

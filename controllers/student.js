@@ -9,7 +9,7 @@ export const createStudent = async (req, res) => {
       lrn,
       firstName,
       lastName,
-      email,
+      username,
       password,
       gradeLevel,
       gender,
@@ -20,7 +20,7 @@ export const createStudent = async (req, res) => {
       !lrn ||
       !firstName ||
       !lastName ||
-      !email ||
+      !username ||
       !gender ||
       !password ||
       !gradeLevel
@@ -29,10 +29,10 @@ export const createStudent = async (req, res) => {
     }
 
     const existingStudent = await Student.findOne({
-      $or: [{ lrn }, { email }],
+      $or: [{ lrn }, { username }],
     });
     if (existingStudent) {
-      return res.status(409).json({ message: `LRN or email already exist` });
+      return res.status(409).json({ message: `LRN or username already exist` });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -41,7 +41,7 @@ export const createStudent = async (req, res) => {
       lrn,
       firstName,
       lastName,
-      email,
+      username,
       gender,
       password: hashedPassword,
       gradeLevel,
@@ -117,9 +117,9 @@ export const getOneStudent = async (req, res) => {
 export const updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { lrn, firstName, lastName, email, gradeLevel, gender } = req.body;
+    const { lrn, firstName, lastName, username, gradeLevel, gender } = req.body;
 
-    if (!lrn || !firstName || !lastName || !email || !gender || !gradeLevel) {
+    if (!lrn || !firstName || !lastName || !username || !gender || !gradeLevel) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
@@ -128,16 +128,16 @@ export const updateStudent = async (req, res) => {
     }
 
     const existingStudent = await Student.findOne({
-      $or: [{ lrn }, { email }],
+      $or: [{ lrn }, { username }],
       _id: { $ne: id },
     });
     if (existingStudent) {
-      return res.status(409).json({ message: `LRN or email already exist` });
+      return res.status(409).json({ message: `LRN or username already exist` });
     }
 
     const student = await Student.findByIdAndUpdate(
       id,
-      { lrn, firstName, lastName, email, gradeLevel, gender },
+      { lrn, firstName, lastName, username, gradeLevel, gender },
       { new: true }
     );
 

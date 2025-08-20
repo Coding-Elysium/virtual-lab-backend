@@ -7,7 +7,7 @@ export const createAdmin = async (req, res) => {
     const {
       firstName,
       lastName,
-      email,
+      username,
       password,
       subject,
       employeeNumber,
@@ -19,7 +19,7 @@ export const createAdmin = async (req, res) => {
     if (
       !firstName ||
       !lastName ||
-      !email ||
+      !username ||
       !password ||
       !subject ||
       !employeeNumber ||
@@ -29,7 +29,7 @@ export const createAdmin = async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const existingAdmin = await Admin.findOne({ email });
+    const existingAdmin = await Admin.findOne({ username });
     if (existingAdmin) {
       return res.status(409).json({ message: "Admin already exists." });
     }
@@ -39,7 +39,7 @@ export const createAdmin = async (req, res) => {
     const admin = new Admin({
       firstName,
       lastName,
-      email,
+      username,
       password: hashedPassword,
       subject,
       employeeNumber,
@@ -99,7 +99,7 @@ export const updateAdmin = async (req, res) => {
     const {
       firstName,
       lastName,
-      email,
+      username,
       subject,
       employeeNumber,
       position,
@@ -111,16 +111,16 @@ export const updateAdmin = async (req, res) => {
     }
 
     const existingAdmin = await Admin.findOne({
-      $or: [{ employeeNumber }, { email }],
+      $or: [{ employeeNumber }, { username }],
       _id: { $ne: id },
     });
     if (existingAdmin) {
-      return res.status(409).json({ message: `LRN or email already exist` });
+      return res.status(409).json({ message: `LRN or username already exist` });
     }
 
     const admin = await Admin.findByIdAndUpdate(
       id,
-      { firstName, lastName, email, subject, employeeNumber, position, gender },
+      { firstName, lastName, username, subject, employeeNumber, position, gender },
       { new: true }
     );
 

@@ -5,14 +5,14 @@ import jwt from "jsonwebtoken";
 
 export const loginStudentController = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { username, password } = req.body;
+    if (!username || !password) {
       return res
         .status(400)
-        .json({ success: false, message: "Email and password are requireds" });
+        .json({ success: false, message: "username and password are requireds" });
     }
 
-    const user = await Student.findOne({ email });
+    const user = await Student.findOne({ username });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -43,14 +43,14 @@ export const loginStudentController = async (req, res) => {
 
 export const loginAdminController = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { username, password } = req.body;
+    if (!username || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ message: "username and password are required" });
     }
 
-    const user = await Admin.findOne({ email });
+    const user = await Admin.findOne({ username });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -70,7 +70,7 @@ export const loginAdminController = async (req, res) => {
         _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email,
+        username: user.username,
         role: user.role,
         subject: user.subject,
         employeeNumber: user.employeeNumber,

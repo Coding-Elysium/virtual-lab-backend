@@ -19,7 +19,7 @@ const studentSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    email: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -47,7 +47,7 @@ const studentSchema = new mongoose.Schema(
 studentSchema.pre("save", function (next) {
   if (this.firstName) this.firstName = capitalizeWords(this.firstName);
   if (this.lastName) this.lastName = capitalizeWords(this.lastName);
-  if (this.email) this.email = this.email.toLowerCase();
+  if (this.username) this.username = this.username.toLowerCase();
   if (this.gradeLevel) this.gradeLevel = capitalizeWords(this.gradeLevel);
   if (this.status) this.status = capitalizeWords(this.status);
   if (this.gender) this.gender = capitalizeWords(this.gender);
