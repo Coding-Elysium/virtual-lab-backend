@@ -36,7 +36,6 @@ export const addPlating = async (req, res) => {
     res.status(201).json({
       success: true,
       message: `Successfully added a plating to ${type} and updated stage`,
-      updatedStage: stageData,
     });
   } catch (error) {
     console.error("Error adding plating:", error);
