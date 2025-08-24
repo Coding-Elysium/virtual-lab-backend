@@ -43,13 +43,11 @@ export const changePassStudent = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Password changed successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error changing password",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error changing password",
+      error: error.message,
+    });
   }
 };
 
@@ -121,7 +119,11 @@ export const studentForgotPassword = async (req, res) => {
     console.error("Error in studentForgotPassword:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error processing request" });
+      .json({
+        success: false,
+        message: "Error processing request",
+        error: error.message,
+      });
   }
 };
 
