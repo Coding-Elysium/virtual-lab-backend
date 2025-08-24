@@ -1,7 +1,7 @@
-import Admin from "../schema/AdminModel";
-import PassRequestAdminModel from "../schema/PassRequestAdminModel";
-import PassRequestStudentModel from "../schema/PassRequestStudentModel";
-import Student from "../schema/StudentModel";
+import Admin from "../schema/AdminModel.js";
+import PassRequestAdminModel from "../schema/PassRequestAdminModel.js";
+import PassRequestStudentModel from "../schema/PassRequestStudentModel.js";
+import Student from "../schema/StudentModel.js";
 
 export const changePassAdmin = async (req, res) => {
   try {
