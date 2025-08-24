@@ -9,6 +9,7 @@ import cocRoute from "./routes/cocRoute.js";
 import performanceRoute from "./routes/performanceRoute.js";
 import platingRoute from "./routes/platingRoute.js";
 import stageRoute from "./routes/stageRoute.js";
+import changepassRoute from "./routes/changepassRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 
@@ -48,6 +49,7 @@ app.use("/plating", platingRoute);
 app.use("/coc", cocRoute);
 app.use("/performance", performanceRoute);
 app.use("/stage", stageRoute);
+app.use("/password", changepassRoute);
 
 mongoose
   .connect(process.env.MONGO_URI, {
