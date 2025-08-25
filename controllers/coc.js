@@ -25,9 +25,9 @@ export const createCoc = async (req, res) => {
     if (type === "coc1") {
       allowedCategory = ["mainDish", "sauce", "soup"];
     } else if (type === "coc2") {
-      allowedCategory = ["appetizer", "salad", "saladAndDressing"];
+      allowedCategory = ["appetizer", "sandwich", "saladAndSaladDress"];
     } else if (type === "coc3") {
-      allowedCategory = ["sandwich"];
+      allowedCategory = ["hotDessert", "coldDessert"];
     }
 
     if (!allowedCategory.includes(category)) {
