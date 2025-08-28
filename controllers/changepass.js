@@ -117,13 +117,11 @@ export const studentForgotPassword = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in studentForgotPassword:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error processing request",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error processing request",
+      error: error.message,
+    });
   }
 };
 
@@ -158,7 +156,11 @@ export const superAdminSetNewPasswordAdmin = async (req, res) => {
     console.error("Error in adminSetNewPassword:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error processing password reset" });
+      .json({
+        success: false,
+        message: "Error processing password reset",
+        error: error.message,
+      });
   }
 };
 
