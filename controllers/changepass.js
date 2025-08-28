@@ -8,22 +8,28 @@ export const changePassAdmin = async (req, res) => {
   try {
     const { employeeNumber, newPassword } = req.body;
 
-    const admin = await Admin.findById(employeeNumber);
+    const admin = await Admin.findOne({ employeeNumber });
     if (!admin) {
       return res
         .status(404)
         .json({ success: false, message: "Admin not found" });
     }
-    admin.password = newPassword;
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    admin.password = hashedPassword;
     await admin.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Password changed successfully" });
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Error changing password" });
+    console.error("Error in changePassAdmin:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error changing password",
+      error: error.message,
+    });
   }
 };
 
@@ -37,7 +43,9 @@ export const changePassStudent = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Student not found" });
     }
-    student.password = newPassword;
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    student.password = hashedPassword;
     await student.save();
 
     res
@@ -147,16 +155,14 @@ export const superAdminSetNewPasswordAdmin = async (req, res) => {
       password: hashedPassword,
     });
 
-    resetRequest.status = "approved";
-    resetRequest.processedAt = new Date();
-    await resetRequest.save();
+    await PassRequestAdminModel.findByIdAndDelete(requestId);
 
     res.status(200).json({
       success: true,
-      message: "Password reset successful. New password set by admin.",
+      message: "Password reset successful. Request deleted.",
     });
   } catch (error) {
-    console.error("Error in adminSetNewPassword:", error);
+    console.error("Error in superAdminSetNewPasswordAdmin:", error);
     res.status(500).json({
       success: false,
       message: "Error processing password reset",
@@ -165,7 +171,7 @@ export const superAdminSetNewPasswordAdmin = async (req, res) => {
   }
 };
 
-export const adminSetNewPasswordStudent = async (req, res) => {
+export const superAdminSetNewPasswordStudent = async (req, res) => {
   try {
     const { requestId } = req.params;
     const { newPassword } = req.body;
@@ -184,9 +190,7 @@ export const adminSetNewPasswordStudent = async (req, res) => {
       password: hashedPassword,
     });
 
-    resetRequest.status = "approved";
-    resetRequest.processedAt = new Date();
-    await resetRequest.save();
+    await PassRequestStudentModel.findByIdAndDelete(requestId);
 
     res.status(200).json({
       success: true,

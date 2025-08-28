@@ -1,7 +1,7 @@
 import express from "express";
 import {
   adminForgotPassword,
-  adminSetNewPasswordStudent,
+  superAdminSetNewPasswordStudent,
   changePassAdmin,
   changePassStudent,
   studentForgotPassword,
@@ -14,6 +14,9 @@ router.post("/student", changePassStudent);
 router.post("/admin/forgotpassword", adminForgotPassword);
 router.post("/student/forgotpassword", studentForgotPassword);
 router.post("/admin/setNewPassword/:requestId", superAdminSetNewPasswordAdmin);
-router.post("/student/setNewPassword/:requestId", adminSetNewPasswordStudent);
+router.post(
+  "/student/setNewPassword/:requestId",
+  superAdminSetNewPasswordStudent
+);
 
 export default router;
