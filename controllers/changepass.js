@@ -2,6 +2,7 @@ import Admin from "../schema/AdminModel.js";
 import PassRequestAdminModel from "../schema/PassRequestAdminModel.js";
 import PassRequestStudentModel from "../schema/PassRequestStudentModel.js";
 import Student from "../schema/StudentModel.js";
+import bcrypt from "bcrypt";
 
 export const changePassAdmin = async (req, res) => {
   try {
@@ -81,9 +82,11 @@ export const adminForgotPassword = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in studentForgotPassword:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Error processing request" });
+    res.status(500).json({
+      success: false,
+      message: "Error processing request",
+      error: error.message,
+    });
   }
 };
 
@@ -154,13 +157,11 @@ export const superAdminSetNewPasswordAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in adminSetNewPassword:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error processing password reset",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error processing password reset",
+      error: error.message,
+    });
   }
 };
 
@@ -193,8 +194,10 @@ export const adminSetNewPasswordStudent = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in adminSetNewPassword:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Error processing password reset" });
+    res.status(500).json({
+      success: false,
+      message: "Error processing password reset",
+      error: error.message,
+    });
   }
 };
