@@ -143,7 +143,7 @@ export const superAdminSetNewPasswordAdmin = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await Student.findByIdAndUpdate(resetRequest.studentId, {
+    await Admin.findByIdAndUpdate(resetRequest.adminId, {
       password: hashedPassword,
     });
 
