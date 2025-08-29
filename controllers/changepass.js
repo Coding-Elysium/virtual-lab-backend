@@ -205,3 +205,31 @@ export const superAdminSetNewPasswordStudent = async (req, res) => {
     });
   }
 };
+
+export const getAllAdminRequestPassword = async (req, res) => {
+  try {
+    const requests = await PassRequestAdminModel.find({ status: "pending" });
+    res.status(200).json({ success: true, data: requests });
+  } catch (error) {
+    console.error("Error in getAllAdminRequestPassword:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching password reset requests",
+      error: error.message,
+    });
+  }
+};
+
+export const getAllStudentRequestPassword = async (req, res) => {
+  try {
+    const requests = await PassRequestStudentModel.find({ status: "pending" });
+    res.status(200).json({ success: true, data: requests });
+  } catch (error) {
+    console.error("Error in getAllStudentRequestPassword:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching password reset requests",
+      error: error.message,
+    });
+  }
+};

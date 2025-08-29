@@ -6,6 +6,8 @@ import {
   changePassStudent,
   studentForgotPassword,
   superAdminSetNewPasswordAdmin,
+  getAllAdminRequestPassword,
+  getAllStudentRequestPassword,
 } from "../controllers/changepass.js";
 
 const router = express.Router();
@@ -18,5 +20,7 @@ router.post(
   "/student/setNewPassword/:requestId",
   superAdminSetNewPasswordStudent
 );
+router.get("/admin/requestPassword", getAllAdminRequestPassword);
+router.get("/student/requestPassword", getAllStudentRequestPassword);
 
 export default router;

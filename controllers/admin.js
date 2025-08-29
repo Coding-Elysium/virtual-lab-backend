@@ -120,7 +120,15 @@ export const updateAdmin = async (req, res) => {
 
     const admin = await Admin.findByIdAndUpdate(
       id,
-      { firstName, lastName, username, subject, employeeNumber, position, gender },
+      {
+        firstName,
+        lastName,
+        username,
+        subject,
+        employeeNumber,
+        position,
+        gender,
+      },
       { new: true }
     );
 

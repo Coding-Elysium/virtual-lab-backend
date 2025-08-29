@@ -39,7 +39,6 @@ export const createCoc = async (req, res) => {
       });
     }
 
-    // ✅ Check if this category for this type is already submitted by the student
     const existingCoc = await Coc.findOne({ type, category, studentId });
     if (existingCoc) {
       return res.status(400).json({
