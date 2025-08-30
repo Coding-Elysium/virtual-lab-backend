@@ -225,7 +225,10 @@ export const getAllAdminRequestPassword = async (req, res) => {
 
 export const getAllStudentRequestPassword = async (req, res) => {
   try {
-    const requests = await PassRequestStudentModel.find({ status: "pending" });
+    const requests = await PassRequestStudentModel.find({
+      status: "pending",
+    }).populate("studentId", "firstName lastName lrn");
+
     res.status(200).json({ success: true, data: requests });
   } catch (error) {
     console.error("Error in getAllStudentRequestPassword:", error);
