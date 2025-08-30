@@ -208,7 +208,10 @@ export const superAdminSetNewPasswordStudent = async (req, res) => {
 
 export const getAllAdminRequestPassword = async (req, res) => {
   try {
-    const requests = await PassRequestAdminModel.find({ status: "pending" });
+    const requests = await PassRequestAdminModel.find({
+      status: "pending",
+    }).populate("firstName lastName adminId");
+
     res.status(200).json({ success: true, data: requests });
   } catch (error) {
     console.error("Error in getAllAdminRequestPassword:", error);
