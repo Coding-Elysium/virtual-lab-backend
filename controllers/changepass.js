@@ -210,7 +210,7 @@ export const getAllAdminRequestPassword = async (req, res) => {
   try {
     const requests = await PassRequestAdminModel.find({
       status: "pending",
-    }).populate("firstName lastName adminId");
+    }).populate("adminId", "firstName lastName employeeNumber position");
 
     res.status(200).json({ success: true, data: requests });
   } catch (error) {
