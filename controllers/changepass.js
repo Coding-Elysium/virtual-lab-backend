@@ -120,7 +120,7 @@ export const studentForgotPassword = async (req, res) => {
         .json({ success: false, message: "Request already pending" });
     }
 
-    await PasswordResetRequest.create({ studentId: student._id });
+    await PassRequestStudentModel.create({ studentId: student._id });
 
     res.status(200).json({
       success: true,
