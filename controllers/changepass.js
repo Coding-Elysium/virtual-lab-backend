@@ -127,7 +127,6 @@ export const studentForgotPassword = async (req, res) => {
       message: "Password reset request submitted. Admin will handle it.",
     });
   } catch (error) {
-    console.error("Error in studentForgotPassword:", error);
     res.status(500).json({
       success: false,
       message: "Error processing request",
@@ -152,7 +151,6 @@ export const superAdminSetNewPasswordAdmin = async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await Admin.findByIdAndUpdate(resetRequest.adminId, {
-      status: "approved",
       password: hashedPassword,
     });
 
