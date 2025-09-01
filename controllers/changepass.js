@@ -37,7 +37,7 @@ export const changePassStudent = async (req, res) => {
   try {
     const { lrn, newPassword } = req.body;
 
-    const student = await Student.findById(lrn);
+    const student = await Student.findOne({ lrn });
     if (!student) {
       return res
         .status(404)
