@@ -1,4 +1,4 @@
-import Ingredient from "../schema/IngredientModel";
+import Ingredient from "../schema/IngredientModel.js";
 import cloudinary from "cloudinary";
 
 cloudinary.v2.config({
