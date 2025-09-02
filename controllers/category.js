@@ -1,17 +1,17 @@
 import Category from "../schema/CategoryModel.js";
 
-export const addCategory = async(req, res) => {
-    try {
-        const { categoryName } = req.body;
+export const addCategory = async (req, res) => {
+  try {
+    const { categoryName } = req.body;
 
-        const category = await Category.create({
-            categoryName,
-        });
+    const category = await Category.create({
+      categoryName,
+    });
 
     res.status(200).json({
       success: true,
       message: "Successfully added category",
-      data: category
+      data: category,
     });
   } catch (error) {
     res.status(500).json({
@@ -20,7 +20,7 @@ export const addCategory = async(req, res) => {
       error: error.message,
     });
   }
-}
+};
 
 export const getCategory = async (req, res) => {
   try {
@@ -40,28 +40,27 @@ export const getCategory = async (req, res) => {
 };
 
 export const deleteCategory = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const deletedCategory = await Category.findByIdAndDelete(id);
+    const deletedCategory = await Category.findByIdAndDelete(id);
 
-        if (!deletedCategory) {
-            return res.status(404).json({
-                success: false,
-                message: "Category not found",
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Successfully deleted category",
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Server error",
-            error: error.message,
-        });
+    if (!deletedCategory) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully deleted category",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
 };
