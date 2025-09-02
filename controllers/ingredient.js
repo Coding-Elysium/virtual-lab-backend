@@ -47,30 +47,34 @@ import cloudinary from "../utils/cloudinary.js";
 
 
 
-export const addIngredients = async(req, res) => {
+export const addIngredients = async (req, res) => {
   try {
+    cloudinary.uploader.upload(
+      req.file.path,
+      {
+        folder: "ingredients", 
+      },
+      function (err, result) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({
+            success: false,
+            message: "Error uploading image",
+          });
+        }
 
-      const sample = process.env.CLOUDINARY_CLOUD_NAME;
-      // cloudinary.uploader.upload(req.file.path, function (err, result){
-      // if(err) {
-      //   console.log(err);
-      //   return res.status(500).json({
-      //     success: false,
-      //     message: "Error"
-      //   })
-      // }
-
-      return res.status(200).json({
-        success: true,
-        message:"Uploaded!",
-        data: sample
-      });
-    // })
+        return res.status(200).json({
+          success: true,
+          message: "Uploaded!",
+          url: result.secure_url, 
+        });
+      }
+    );
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message:"Not Uploaded!",
+      message: "Not Uploaded!",
       error: error.message,
-    })
+    });
   }
-}
+};
