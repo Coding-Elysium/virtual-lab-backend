@@ -1,7 +1,7 @@
 import Ingredient from "../schema/IngredientModel.js";
 import { v2 as cloudinary } from "cloudinary";
 
-cloudinary.v2.config({
+cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
@@ -21,7 +21,7 @@ export const addIngredients = async (req, res) => {
     let imageUrl = null;
 
     if (image) {
-      const uploadResponse = await cloudinary.v2.uploader.upload(image, {
+      const uploadResponse = await cloudinary.uploader.upload(image, {
         folder: "ingredients",
       });
       imageUrl = uploadResponse.secure_url;
@@ -49,12 +49,3 @@ export const addIngredients = async (req, res) => {
     });
   }
 };
-
-
-export const getIngredients = async(req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-}
