@@ -1,3 +1,4 @@
+import Category from "../schema/CategoryModel.js";
 import Ingredient from "../schema/IngredientModel.js";
 import cloudinary from "../utils/cloudinary.js";
 
@@ -12,11 +13,22 @@ export const addIngredients = async (req, res) => {
       });
     }
 
+    const categoryDoc = await Category.findById(category);
+
+    if (!categoryDoc) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    const categoryName = categoryDoc.category;
+
     let imageUrl = null;
 
     if (req.file && req.file.path) {
       const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
-        folder: `ingredients/${category}`,
+        folder: `ingredients/${categoryName}`,
       });
       imageUrl = uploadResponse.secure_url;
     }
