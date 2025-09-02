@@ -10,6 +10,8 @@ import performanceRoute from "./routes/performanceRoute.js";
 import platingRoute from "./routes/platingRoute.js";
 import stageRoute from "./routes/stageRoute.js";
 import changepassRoute from "./routes/changepassRoute.js";
+import ingredientRoute from "./routes/ingredientRoute.js";
+import categoryRoute from "./routes/categoryRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 
@@ -50,6 +52,8 @@ app.use("/coc", cocRoute);
 app.use("/performance", performanceRoute);
 app.use("/stage", stageRoute);
 app.use("/password", changepassRoute);
+app.use("/ingredient", ingredientRoute);
+app.use("/category", categoryRoute);
 
 mongoose
   .connect(process.env.MONGO_URI, {
