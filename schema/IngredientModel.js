@@ -18,7 +18,11 @@ const IngredientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    actions: {
+    validactions: {
+      type: [String],
+      default: [],
+    },
+    invalidactions: {
       type: [String],
       default: [],
     },
