@@ -5,7 +5,7 @@ export const addCategory = async (req, res) => {
     const { categoryName } = req.body;
 
     const category = await Category.create({
-      categoryName,
+      category: categoryName,
     });
 
     res.status(200).json({

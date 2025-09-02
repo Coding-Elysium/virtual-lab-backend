@@ -52,8 +52,8 @@ app.use("/coc", cocRoute);
 app.use("/performance", performanceRoute);
 app.use("/stage", stageRoute);
 app.use("/password", changepassRoute);
-app.use("/ingredient", ingredientRoute);
-app.use("/category", categoryRoute);
+app.use("/ingredients", ingredientRoute);
+app.use("/categories", categoryRoute);
 
 mongoose
   .connect(process.env.MONGO_URI, {

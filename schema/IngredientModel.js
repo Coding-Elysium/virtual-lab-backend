@@ -7,15 +7,10 @@ const IngredientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    // categoryId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Category",
-    //   required: true,
-    // },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
-      trim: true,
     },
     name: {
       type: String,
@@ -23,16 +18,16 @@ const IngredientSchema = new mongoose.Schema(
       trim: true,
     },
     actions: {
-      type: [String], 
+      type: [String],
       default: [],
     },
     image: {
-      type: String, 
+      type: String,
       default: null,
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

@@ -16,7 +16,7 @@ export const addIngredients = async (req, res) => {
 
     if (req.file && req.file.path) {
       const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
-        folder: "ingredients",
+        folder: `ingredients/${category}`,
       });
       imageUrl = uploadResponse.secure_url;
     }
@@ -36,6 +36,25 @@ export const addIngredients = async (req, res) => {
     });
   } catch (error) {
     console.error("Error adding ingredient:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+export const getIngredients = async (req, res) => {
+  try {
+    const { category } = req.query;
+    const ingredients = await Ingredient.find(category ? { category } : {});
+    res.status(200).json({
+      success: true,
+      message: "Ingredients fetched successfully",
+      data: ingredients,
+    });
+  } catch (error) {
+    console.error("Error fetching ingredients:", error);
     res.status(500).json({
       success: false,
       message: "Server error",
