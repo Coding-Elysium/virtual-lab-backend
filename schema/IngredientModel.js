@@ -31,6 +31,13 @@ const IngredientSchema = new mongoose.Schema(
   }
 );
 
+IngredientSchema.pre("save", function (next) {
+  if (this.name) this.name = capitalizeWords(this.name);
+  if (this.category) this.category = capitalizeWords(this.category);
+
+  next();
+});
+
 const Ingredient = mongoose.model("Ingredient", IngredientSchema);
 
 export default Ingredient;
