@@ -59,8 +59,14 @@ export const addIngredients = async (req, res) => {
 
 export const getIngredients = async (req, res) => {
   try {
-    const { category } = req.query;
-    const ingredients = await Ingredient.find(category ? { category } : {});
+    const { category, type } = req.query;
+
+    const filter = {};
+    if (category) filter.category = category;
+    if (type) filter.type = type;
+
+    const ingredients = await Ingredient.find(filter);
+
     res.status(200).json({
       success: true,
       message: "Ingredients fetched successfully",
