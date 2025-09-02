@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { capitalizeWords } from "../helpers/helpers.js";
 
 const IngredientSchema = new mongoose.Schema(
   {
