@@ -69,13 +69,13 @@ mongoose
   .then(async () => {
     console.log("Connected to MongoDB");
 
-    for (const action of actionTools) {
-      await ActionTools.updateOne(
-        { name: action.name },
-        { $set: action },
-        { upsert: true }
-      );
-    }
+    // for (const action of actionTools) {
+    //   await ActionTools.updateOne(
+    //     { name: action.name },
+    //     { $set: action },
+    //     { upsert: true }
+    //   );
+    // }
 
     console.log("Default actions ensured in database ✅");
 
