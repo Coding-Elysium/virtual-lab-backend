@@ -56,13 +56,20 @@ export const addIngredients = async (req, res) => {
 
 export const getIngredients = async (req, res) => {
   try {
-    const { category, type } = req.query;
+    const { category } = req.query;
 
-    const filter = {};
-    if (category) filter.category = category;
-    if (type) filter.type = type;
+    const categoryDoc = await Category.findOne({ category: category });
 
-    const ingredients = await Ingredient.find(filter);
+    if (!categoryDoc) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    const categoryId = categoryDoc._id;
+
+    const ingredients = await Ingredient.find({ category: categoryId });
 
     res.status(200).json({
       success: true,
@@ -78,3 +85,4 @@ export const getIngredients = async (req, res) => {
     });
   }
 };
+

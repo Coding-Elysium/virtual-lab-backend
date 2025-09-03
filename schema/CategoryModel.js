@@ -12,11 +12,11 @@ const categorySchema = new mongoose.Schema(
   { collection: "category" }
 );
 
-categorySchema.pre("save", function (next) {
-  if (this.category) this.category = capitalizeWords(this.category);
+// categorySchema.pre("save", function (next) {
+//   if (this.category) this.category = capitalizeWords(this.category);
 
-  next();
-});
+//   next();
+// });
 
 const Category = mongoose.model("Category", categorySchema);
 
