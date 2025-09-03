@@ -1,4 +1,4 @@
-import ActionTools from "../schema/ActionToolsModal";
+import ActionTools from "../schema/ActionToolsModal.js";
 
 export const getActionTools = async (req, res) => {
   try {
