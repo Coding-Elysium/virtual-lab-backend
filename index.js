@@ -12,6 +12,7 @@ import stageRoute from "./routes/stageRoute.js";
 import changepassRoute from "./routes/changepassRoute.js";
 import ingredientRoute from "./routes/ingredientRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
+import actionIngredientsRoute from "./routes/actionIngredientsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 
@@ -54,6 +55,7 @@ app.use("/stage", stageRoute);
 app.use("/password", changepassRoute);
 app.use("/ingredients", ingredientRoute);
 app.use("/categories", categoryRoute);
+app.use("/ingredients-action", actionIngredientsRoute);
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -69,3 +71,28 @@ mongoose
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error.message);
   });
+
+
+//   const actions = [
+//   { name: "chop", tools: ["knife", "chopper", "cleaver", "paringKnife"] },
+//   { name: "peel", tools: ["peeler", "paringKnife"] },
+//   { name: "stir", tools: ["spoon", "spatula"] },
+//   { name: "cut", tools: ["knife", "cutter", "cleaver", "paringKnife"] },
+//   { name: "marinate", tools: ["bowl", "ziplocBag", "container"] },
+//   { name: "slice", tools: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"] },
+//   { name: "blend", tools: ["blender", "foodProcessor"] },
+//   { name: "grind", tools: ["grinder", "mortarAndPestle", "mill", "foodProcessor"] },
+//   { name: "pour", tools: ["pitcher", "cup", "measuringCup", "bowl"] },
+//   { name: "grate", tools: ["grater", "zester"] },
+//   { name: "sprinkle", tools: ["hand", "spoon", "shaker"] },
+//   { name: "rinse", tools: ["sink", "strainer", "bowl"] },
+//   { name: "soak", tools: ["bowl", "container"] },
+//   { name: "season", tools: ["hand", "spoon", "shaker"] },
+//   { name: "whisk", tools: ["whisk", "mixer", "fork"] },
+//   { name: "crack", tools: ["hand", "bowl"] },
+//   { name: "beat", tools: ["mixer", "whisk", "fork"] },
+//   { name: "wash", tools: ["sink", "bowl"] },
+//   { name: "scoop", tools: ["spoon", "ladle", "cup", "measuringCup"] },
+//   { name: "scramble", tools: ["whisk", "spatula", "pan", "fork"] },
+//   { name: "clean", tools: ["sink", "sponge", "hand", "towel"] },
+// ];

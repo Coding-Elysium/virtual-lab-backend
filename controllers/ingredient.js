@@ -56,25 +56,20 @@ export const addIngredients = async (req, res) => {
 
 export const getIngredients = async (req, res) => {
   try {
-    const { category } = req.query;
+    const ingredients = await Ingredient.find().populate('category', 'name');
 
-    const categoryDoc = await Category.findOne({ category: category });
-
-    if (!categoryDoc) {
-      return res.status(404).json({
-        success: false,
-        message: "Category not found",
-      });
-    }
-
-    const categoryId = categoryDoc._id;
-
-    const ingredients = await Ingredient.find({ category: categoryId });
+    const modifiedIngredients = ingredients.map(ingredient => {
+      return {
+        ...ingredient.toObject(),
+        categoryName: ingredient.category.name, 
+        category: undefined 
+      };
+    });
 
     res.status(200).json({
       success: true,
       message: "Ingredients fetched successfully",
-      data: ingredients,
+      data: modifiedIngredients,
     });
   } catch (error) {
     console.error("Error fetching ingredients:", error);
@@ -85,4 +80,5 @@ export const getIngredients = async (req, res) => {
     });
   }
 };
+
 
