@@ -3,15 +3,18 @@ import { capitalizeWords } from "../helpers/helpers.js";
 
 const ingredientsActionSchema = new mongoose.Schema(
   {
-    action: {
+    name: {
       type: String,
       required: true,
       trim: true,
     },
   },
-  { collection: "admin" }
+  { collection: "actioningredients" }
 );
 
-const ingredientsAction = mongoose.model("IngredientsAction", ingredientsActionSchema);
+const IngredientActionModel = mongoose.model(
+  "IngredientsAction",
+  ingredientsActionSchema
+);
 
-export default ingredientsAction;
+export default IngredientActionModel;

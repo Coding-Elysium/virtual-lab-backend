@@ -17,7 +17,12 @@ import actionToolsRoute from "./routes/actionToolsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 import ActionTools from "./schema/ActionToolsModal.js";
-import { actionTools } from "./utils/cloudinary.js";
+import {
+  actionIngredientsTools,
+  ingredientsAction,
+} from "./utils/cloudinary.js";
+import IngredientActionModel from "./schema/ActionIngredientsModel.js";
+import ActionToolsModel from "./schema/ActionToolsModal.js";
 
 dotenv.config();
 
@@ -69,13 +74,21 @@ mongoose
   .then(async () => {
     console.log("Connected to MongoDB");
 
-    // for (const action of actionTools) {
-    //   await ActionTools.updateOne(
-    //     { name: action.name },
-    //     { $set: action },
-    //     { upsert: true }
-    //   );
-    // }
+    for (const ingredientActionData of ingredientsAction) {
+      await IngredientActionModel.updateOne(
+        { name: ingredientActionData },
+        { $set: { name: ingredientActionData } },
+        { upsert: true }
+      );
+    }
+
+    for (const actionIngredientToolsData of actionIngredientsTools) {
+      await ActionToolsModel.updateOne(
+        { tools: actionIngredientToolsData },
+        { $set: { tools: actionIngredientToolsData } },
+        { upsert: true }
+      );
+    }
 
     console.log("Default actions ensured in database ✅");
 
