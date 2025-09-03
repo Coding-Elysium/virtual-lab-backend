@@ -4,9 +4,9 @@ import cloudinary from "../utils/cloudinary.js";
 
 export const addIngredients = async (req, res) => {
   try {
-    const { type, category, name, validactions, invalidactions } = req.body;
+    const { category, name } = req.body;
 
-    if (!type || !category || !name) {
+    if (!category || !name) {
       return res.status(400).json({
         success: false,
         message: "Type, category, and name are required",
@@ -34,11 +34,8 @@ export const addIngredients = async (req, res) => {
     }
 
     const ingredient = await Ingredient.create({
-      type,
       category,
       name,
-      validactions,
-      invalidactions,
       image: imageUrl,
     });
 

@@ -3,11 +3,6 @@ import { capitalizeWords } from "../helpers/helpers.js";
 
 const IngredientSchema = new mongoose.Schema(
   {
-    type: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
@@ -17,14 +12,6 @@ const IngredientSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    validactions: {
-      type: [String],
-      default: [],
-    },
-    invalidactions: {
-      type: [String],
-      default: [],
     },
     image: {
       type: String,
