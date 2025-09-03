@@ -13,8 +13,11 @@ import changepassRoute from "./routes/changepassRoute.js";
 import ingredientRoute from "./routes/ingredientRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import actionIngredientsRoute from "./routes/actionIngredientsRoute.js";
+import actionToolsRoute from "./routes/actionToolsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
+import ActionTools from "./schema/ActionToolsModal.js";
+import { actionTools } from "./utils/cloudinary.js";
 
 dotenv.config();
 
@@ -55,15 +58,27 @@ app.use("/stage", stageRoute);
 app.use("/password", changepassRoute);
 app.use("/ingredients", ingredientRoute);
 app.use("/categories", categoryRoute);
-app.use("/ingredients-action", actionIngredientsRoute);
+app.use("/action-ingredients", actionIngredientsRoute);
+app.use("/action-tools", actionToolsRoute);
 
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
+  .then(async () => {
     console.log("Connected to MongoDB");
+
+    for (const action of actionTools) {
+      await ActionTools.updateOne(
+        { name: action.name },
+        { $set: action },
+        { upsert: true }
+      );
+    }
+
+    console.log("Default actions ensured in database ✅");
+
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
@@ -71,28 +86,3 @@ mongoose
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error.message);
   });
-
-
-//   const actions = [
-//   { name: "chop", tools: ["knife", "chopper", "cleaver", "paringKnife"] },
-//   { name: "peel", tools: ["peeler", "paringKnife"] },
-//   { name: "stir", tools: ["spoon", "spatula"] },
-//   { name: "cut", tools: ["knife", "cutter", "cleaver", "paringKnife"] },
-//   { name: "marinate", tools: ["bowl", "ziplocBag", "container"] },
-//   { name: "slice", tools: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"] },
-//   { name: "blend", tools: ["blender", "foodProcessor"] },
-//   { name: "grind", tools: ["grinder", "mortarAndPestle", "mill", "foodProcessor"] },
-//   { name: "pour", tools: ["pitcher", "cup", "measuringCup", "bowl"] },
-//   { name: "grate", tools: ["grater", "zester"] },
-//   { name: "sprinkle", tools: ["hand", "spoon", "shaker"] },
-//   { name: "rinse", tools: ["sink", "strainer", "bowl"] },
-//   { name: "soak", tools: ["bowl", "container"] },
-//   { name: "season", tools: ["hand", "spoon", "shaker"] },
-//   { name: "whisk", tools: ["whisk", "mixer", "fork"] },
-//   { name: "crack", tools: ["hand", "bowl"] },
-//   { name: "beat", tools: ["mixer", "whisk", "fork"] },
-//   { name: "wash", tools: ["sink", "bowl"] },
-//   { name: "scoop", tools: ["spoon", "ladle", "cup", "measuringCup"] },
-//   { name: "scramble", tools: ["whisk", "spatula", "pan", "fork"] },
-//   { name: "clean", tools: ["sink", "sponge", "hand", "towel"] },
-// ];
