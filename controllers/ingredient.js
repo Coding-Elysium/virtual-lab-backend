@@ -56,13 +56,15 @@ export const addIngredients = async (req, res) => {
 
 export const getIngredients = async (req, res) => {
   try {
-    const ingredients = await Ingredient.find().populate('category', 'name');
+    const ingredients = await Ingredient.find().populate(
+      "category",
+      "category" // make sure to populate the "name" field of category
+    );
 
-    const modifiedIngredients = ingredients.map(ingredient => {
+    const modifiedIngredients = ingredients.map((ingredient) => {
       return {
         ...ingredient.toObject(),
-        categoryName: ingredient.category.name, 
-        category: undefined 
+        category: ingredient.category?.category || null, // flatten category to just its name
       };
     });
 
@@ -80,5 +82,3 @@ export const getIngredients = async (req, res) => {
     });
   }
 };
-
-
