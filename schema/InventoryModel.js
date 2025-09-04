@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema(
   {
-    path: {
+    image: {
       type: String,
       required: true,
       trim: true,
