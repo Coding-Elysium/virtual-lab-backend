@@ -79,13 +79,6 @@ export const actionIngredientsTools = [
   { "name": "sponge", "category": "cleaning" },
   { "name": "dishRack", "category": "cleaning" },
   { "name": "dishCloth", "category": "cleaning" },
-
-  { "name": "mortarAndPestle", "category": "specialty" },
-  { "name": "pan", "category": "specialty" },
-  { "name": "pressureCooker", "category": "specialty" },
-  { "name": "griddle", "category": "specialty" },
-  { "name": "sousVide", "category": "specialty" },
-  { "name": "pizzaStone", "category": "specialty" }
 ]
 
 
