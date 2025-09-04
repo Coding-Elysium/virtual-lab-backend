@@ -16,13 +16,6 @@ import actionIngredientsRoute from "./routes/actionIngredientsRoute.js";
 import actionToolsRoute from "./routes/actionToolsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
-import ActionTools from "./schema/ActionToolsModal.js";
-import {
-  actionIngredientsTools,
-  ingredientsAction,
-} from "./utils/cloudinary.js";
-import IngredientActionModel from "./schema/ActionIngredientsModel.js";
-import ActionToolsModel from "./schema/ActionToolsModal.js";
 
 dotenv.config();
 
