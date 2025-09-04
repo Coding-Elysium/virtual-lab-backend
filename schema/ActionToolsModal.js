@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const actionToolsSchema = new mongoose.Schema(
   {
-    tools: {
+    name: {
       type: String,
       required: true,
       unique: true,

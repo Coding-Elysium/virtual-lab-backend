@@ -16,6 +16,8 @@ import actionIngredientsRoute from "./routes/actionIngredientsRoute.js";
 import actionToolsRoute from "./routes/actionToolsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
+import ActionToolsModel from "./schema/ActionToolsModal.js";
+import { actionIngredientsTools } from "./utils/cloudinary.js";
 
 dotenv.config();
 
@@ -77,8 +79,8 @@ mongoose
 
     // for (const actionIngredientToolsData of actionIngredientsTools) {
     //   await ActionToolsModel.updateOne(
-    //     { tools: actionIngredientToolsData },
-    //     { $set: { tools: actionIngredientToolsData } },
+    //     { name: actionIngredientToolsData },
+    //     { $set: { name: actionIngredientToolsData } },
     //     { upsert: true }
     //   );
     // }
