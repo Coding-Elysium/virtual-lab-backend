@@ -8,6 +8,10 @@ const actionToolsSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    category: {
+      type: String,
+      required: true,
+    }
   },
   { timestamps: true }
 );

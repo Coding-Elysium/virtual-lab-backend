@@ -77,13 +77,19 @@ mongoose
     //   );
     // }
 
-    // for (const actionIngredientToolsData of actionIngredientsTools) {
-    //   await ActionToolsModel.updateOne(
-    //     { name: actionIngredientToolsData },
-    //     { $set: { name: actionIngredientToolsData } },
-    //     { upsert: true }
-    //   );
-    // }
+    for (const actionIngredientToolsData of actionIngredientsTools) { 
+      await ActionToolsModel.updateOne(
+        { name: actionIngredientToolsData.name },
+        { 
+          $set: { 
+            name: actionIngredientToolsData.name,
+            category: actionIngredientToolsData.category 
+          }
+        },
+        { upsert: true }
+      );
+    }
+
 
     console.log("Default actions ensured in database ✅");
 
