@@ -28,7 +28,6 @@ export const addKitchenTools = async(req, res) => {
         })
 
         await tool.save();
-
         
         res.status(200).json({
             success: true,
