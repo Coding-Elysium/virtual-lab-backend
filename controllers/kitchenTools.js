@@ -1,4 +1,4 @@
-import KitchenTools from "../schema/KitchenToolsModel";
+import KitchenTools from "../schema/KitchenToolsModel.js";
 
 export const addKitchenTools = async(req, res) => {
     try { 
