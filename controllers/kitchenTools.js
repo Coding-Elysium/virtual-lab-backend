@@ -20,7 +20,7 @@ export const addKitchenTools = async(req, res) => {
             imageUrl = uploadResponse.secure_url;
         }
 
-        const tool = await new KitchenTools({
+        const tool = new KitchenTools({
             name,
             actions,
             image: imageUrl
