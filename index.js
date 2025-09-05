@@ -14,6 +14,7 @@ import ingredientRoute from "./routes/ingredientRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import actionIngredientsRoute from "./routes/actionIngredientsRoute.js";
 import actionToolsRoute from "./routes/actionToolsRoute.js";
+import kitchenToolsRoute from "./routes/kitchenToolsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 import ActionToolsModel from "./schema/ActionToolsModal.js";
@@ -60,6 +61,8 @@ app.use("/ingredients", ingredientRoute);
 app.use("/categories", categoryRoute);
 app.use("/action-ingredients", actionIngredientsRoute);
 app.use("/action-tools", actionToolsRoute);
+app.use("/kitchen-tools", kitchenToolsRoute);
+
 
 mongoose
   .connect(process.env.MONGO_URI, {
