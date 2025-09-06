@@ -32,55 +32,402 @@ export const ingredientsAction = [
   "scoop",
   "scramble",
   "clean",
+  "measure",
+  "mix",
+  "cook",
+  "boil",
+  "drain",
+  "stirFry",
 ];
 
 export const actionIngredientsTools = [
-  { "name": "knife", "category": "cutting" },
-  { "name": "chopper", "category": "cutting" },
-  { "name": "cleaver", "category": "cutting" },
-  { "name": "paringKnife", "category": "cutting" },
-  { "name": "breadSlicer", "category": "cutting" },
-  { "name": "mandolineSlicer", "category": "cutting" },
-  { "name": "cutter", "category": "cutting" },
-  { "name": "grater", "category": "cutting" },
-  { "name": "zester", "category": "cutting" },
-  { "name": "peeler", "category": "cutting" },
-  { "name": "scissors", "category": "cutting" },
-  { "name": "juliennePeeler", "category": "cutting" },
+  { name: "knife", category: "cutting" },
+  { name: "chopper", category: "cutting" },
+  { name: "cleaver", category: "cutting" },
+  { name: "paringKnife", category: "cutting" },
+  { name: "breadSlicer", category: "cutting" },
+  { name: "mandolineSlicer", category: "cutting" },
+  { name: "cutter", category: "cutting" },
+  { name: "grater", category: "cutting" },
+  { name: "zester", category: "cutting" },
+  { name: "peeler", category: "cutting" },
+  { name: "scissors", category: "cutting" },
+  { name: "juliennePeeler", category: "cutting" },
 
-  { "name": "blender", "category": "mixing" },
-  { "name": "foodProcessor", "category": "mixing" },
-  { "name": "grinder", "category": "mixing" },
-  { "name": "whisk", "category": "mixing" },
-  { "name": "mixer", "category": "mixing" },
-  { "name": "spoon", "category": "mixing" },
-  { "name": "spatula", "category": "mixing" },
-  { "name": "hand", "category": "mixing" },
-  { "name": "ladle", "category": "mixing" },
-  { "name": "electricMixer", "category": "mixing" },
-  { "name": "mortarAndPestle", "category": "mixing" },
+  { name: "blender", category: "mixing" },
+  { name: "foodProcessor", category: "mixing" },
+  { name: "grinder", category: "mixing" },
+  { name: "whisk", category: "mixing" },
+  { name: "mixer", category: "mixing" },
+  { name: "spoon", category: "mixing" },
+  { name: "spatula", category: "mixing" },
+  { name: "hand", category: "mixing" },
+  { name: "ladle", category: "mixing" },
+  { name: "electricMixer", category: "mixing" },
+  { name: "mortarAndPestle", category: "mixing" },
 
-  { "name": "measuringCup", "category": "measuring" },
-  { "name": "cup", "category": "measuring" },
-  { "name": "pitcher", "category": "measuring" },
-  { "name": "bowl", "category": "measuring" },
-  { "name": "strainer", "category": "measuring" },
-  { "name": "fork", "category": "measuring" },
-  { "name": "shaker", "category": "measuring" },
-  { "name": "ladle", "category": "measuring" },
-  { "name": "tongs", "category": "measuring" },
-  { "name": "digitalScale", "category": "measuring" },
+  { name: "measuringCup", category: "measuring" },
+  { name: "cup", category: "measuring" },
+  { name: "pitcher", category: "measuring" },
+  { name: "bowl", category: "measuring" },
+  { name: "strainer", category: "measuring" },
+  { name: "fork", category: "measuring" },
+  { name: "shaker", category: "measuring" },
+  { name: "ladle", category: "measuring" },
+  { name: "tongs", category: "measuring" },
+  { name: "digitalScale", category: "measuring" },
 
-  { "name": "ziplocBag", "category": "storage" },
-  { "name": "container", "category": "storage" },
-  { "name": "mill", "category": "storage" },
-  { "name": "sink", "category": "cleaning" },
-  { "name": "towel", "category": "cleaning" },
-  { "name": "sponge", "category": "cleaning" },
-  { "name": "dishRack", "category": "cleaning" },
-  { "name": "dishCloth", "category": "cleaning" },
-]
+  { name: "ziplocBag", category: "storage" },
+  { name: "container", category: "storage" },
+  { name: "mill", category: "storage" },
+  { name: "sink", category: "cleaning" },
+  { name: "towel", category: "cleaning" },
+  { name: "sponge", category: "cleaning" },
+  { name: "dishRack", category: "cleaning" },
+  { name: "dishCloth", category: "cleaning" },
+];
 
+export const VALID_PROCEDURES = {
+  sauce: {
+    ingredients: {
+      garlic: {
+        peel: ["hand"],
+        chop: ["knife"],
+      },
+      sugar: {
+        measure: ["spoon"],
+      },
+      vinegar: {
+        measure: ["spoon"],
+        sprinkle: ["shaker"],
+      },
+      tomatoPaste: {
+        scoop: ["spoon"],
+      },
+      cornstarch: {
+        mix: ["bowl", "spoon"],
+      },
+      chiliFlakes: {
+        measure: ["spoon"],
+      },
+      soySauce: {
+        measure: ["spoon"],
+      },
+      ginger: {
+        peel: ["knife"],
+        slice: ["knife"],
+      },
+      springOnion: {
+        wash: ["hand", "water"],
+        chop: ["knife"],
+      },
+      oil: {
+        pour: ["spoon"],
+      },
+      salt: {
+        measure: ["spoon"],
+      },
+      butter: {
+        scoop: ["spoon"],
+      },
+      milkOrCream: {
+        pour: ["cup"],
+      },
+      onion: {
+        peel: ["hand"],
+        chop: ["knife"],
+      },
+    },
+    equipments: ["kaldero", "knife", "pan", "bowl", "spoon"],
+  },
+  mainDish: {
+    ingredients: {
+      beef: {
+        slice: ["knife"],
+        stirFry: ["pan", "spatula"],
+      },
+      bellPepper: {
+        wash: ["hand", "water"],
+        slice: ["knife"],
+      },
+      onion: {
+        wash: ["hand", "water"],
+        slice: ["knife"],
+      },
+      soySauce: {
+        measure: ["spoon"],
+      },
+      garlic: {
+        peel: ["hand"],
+        chop: ["knife"],
+      },
+      shrimp: {
+        clean: ["hand", "water"],
+        peel: ["hand"],
+      },
+      butter: {
+        measure: ["spoon"],
+      },
+      pork: {
+        slice: ["knife"],
+        marinate: ["bowl", "spoon"],
+      },
+      vinegar: {
+        measure: ["spoon"],
+      },
+      sugar: {
+        measure: ["spoon"],
+      },
+      tomatoPaste: {
+        measure: ["spoon"],
+      },
+      rice: {
+        wash: ["hand", "water"],
+        cook: ["kaldero"],
+      },
+      egg: {
+        beat: ["bowl", "fork"],
+      },
+      springOnion: {
+        wash: ["hand", "water"],
+        chop: ["knife"],
+      },
+      cookingOil: {
+        pour: ["spoon"],
+      },
+      tofu: {
+        slice: ["knife"],
+      },
+      mushroom: {
+        wash: ["hand", "water"],
+        slice: ["knife"],
+      },
+      noodles: {
+        boil: ["kaldero"],
+        drain: ["strainer"],
+      },
+      chicken: {
+        chop: ["knife"],
+        boil: ["kaldero"],
+      },
+    },
+    equipments: [
+      "kaldero",
+      "knife",
+      "pan",
+      "spatula",
+      "bowl",
+      "fork",
+      "spoon",
+      "strainer",
+    ],
+  },
+  soup: {
+    ingredients: {
+      chicken: {
+        chop: ["knife"],
+        boil: ["pot"],
+      },
+      potato: {
+        wash: ["hand", "water"],
+        cut: ["knife"],
+      },
+      carrot: {
+        wash: ["hand", "water"],
+        cut: ["knife"],
+      },
+      onion: {
+        wash: ["hand", "water"],
+        slice: ["knife"],
+      },
+      garlic: {
+        peel: ["hand"],
+        chop: ["knife"],
+      },
+      fish: {
+        clean: ["hand", "water"],
+        slice: ["knife"],
+      },
+      cabbage: {
+        wash: ["hand", "water"],
+        chop: ["knife"],
+        peel: ["paringKnife"],
+      },
+      ginger: {
+        peel: ["knife"],
+        slice: ["knife"],
+      },
+      springOnion: {
+        wash: ["hand", "water"],
+        chop: ["knife"],
+      },
+      egg: {
+        beat: ["bowl", "fork"],
+      },
+      cornstarch: {
+        mix: ["bowl", "spoon"],
+      },
+      tofu: {
+        slice: ["knife"],
+      },
+      soySauce: {
+        measure: ["spoon"],
+      },
+      salt: {
+        measure: ["spoon"],
+      },
+      water: {
+        pour: ["cup"],
+      },
+    },
+    equipments: [
+      "knife",
+      "pan",
+      "bowl",
+      "fork",
+      "spoon",
+      "cup",
+      "Gloves",
+      "Apron",
+    ],
+  },
+};
+
+export const soupCombination = [
+  //? SOUP
+  {
+    name: "fish soup",
+    type: "soup",
+    contains: ["fish", "water", "ginger"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/fish_soup_eqlcfh.png",
+  },
+  {
+    name: "chicken soup",
+    type: "soup",
+    contains: ["chicken", "water", "carrot", "onion"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/chicken_soup_pm4xzq.png",
+  },
+  {
+    name: "tofu soup",
+    type: "soup",
+    contains: ["tofu", "water", "mushroom", "ginger"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802662/tofu_soup_z1r3cb.png",
+  },
+  {
+    name: "vegetable soup",
+    type: "soup",
+    contains: ["cabbage", "carrot", "onion", "water"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/vegetable_soup_gcqvot.png",
+  },
+  {
+    name: "beef soup",
+    type: "soup",
+    contains: ["beef", "water", "onion", "potato"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/beef_soup_ihgwhv.png",
+  },
+  {
+    name: "egg drop soup",
+    type: "soup",
+    contains: ["egg", "water", "cornstarch", "salt"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/egg_drop_soup_g0t7rf.png",
+  },
+];
+
+export const mainDishCombination = [
+  {
+    name: "fried rice",
+    type: "mainDish",
+    contains: ["rice", "egg", "soy sauce", "onion"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/fried_rice_xufyck.png",
+  },
+  {
+    name: "sweet and sour pork",
+    type: "mainDish",
+    contains: ["pork", "vinegar", "sugar", "tomato paste", "bell pepper"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/sweet_and_sour_pork_vpyp3c.png",
+  },
+  {
+    name: "chicken adobo",
+    type: "mainDish",
+    contains: ["chicken", "soy sauce", "vinegar", "garlic", "onion"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/chicken_adobo_thpfhn.png",
+  },
+  {
+    name: "beef stew",
+    type: "mainDish",
+    contains: ["beef", "potato", "carrot", "onion"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804254/beef_stew_f93kye.png",
+  },
+  {
+    name: "tofu stir fry",
+    type: "mainDish",
+    contains: ["tofu", "soy sauce", "garlic", "bell pepper", "onion"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/tofu_stir_fry_sdfgak.png",
+  },
+  {
+    name: "egg noodles",
+    type: "mainDish",
+    contains: ["noodles", "egg", "butter", "onion", "soy sauce"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804252/egg_noodles_ltyrfo.png",
+  },
+  {
+    name: "mushroom rice",
+    type: "mainDish",
+    contains: ["rice", "mushroom", "onion", "butter"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/mushroom_rice_anxlez.png",
+  },
+];
+
+export const sauceCombination = [
+  {
+    name: "sweet and sour sauce",
+    type: "sauce",
+    contains: ["vinegar", "sugar", "tomato paste"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+  },
+  {
+    name: "soy garlic sauce",
+    type: "sauce",
+    contains: ["soy sauce", "garlic", "sugar"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_3_lrpzsl.png",
+  },
+  {
+    name: "spicy chili sauce",
+    type: "sauce",
+    contains: ["chili flakes", "garlic", "vinegar"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+  },
+  {
+    name: "butter sauce",
+    type: "sauce",
+    contains: ["butter", "garlic", "onion"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823049/sauce_1_pimwnm.png",
+  },
+  {
+    name: "tomato-based sauce",
+    type: "sauce",
+    contains: ["tomato paste", "garlic", "onion", "sugar"],
+    image:
+      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+  },
+];
 
 // export const actionTools = [
 //   { name: "chop", tools: ["knife", "chopper", "cleaver", "paringKnife"] },

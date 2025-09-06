@@ -30,7 +30,7 @@ export const addPlating = async (req, res) => {
     await Stage.findOneAndUpdate(
       { studentId },
       { $set: { [type]: "completed" } },
-      { new: true } 
+      { new: true }
     );
 
     res.status(201).json({

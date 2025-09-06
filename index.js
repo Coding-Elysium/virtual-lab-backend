@@ -18,7 +18,11 @@ import kitchenToolsRoute from "./routes/kitchenToolsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
 import ActionToolsModel from "./schema/ActionToolsModal.js";
-import { actionIngredientsTools } from "./utils/cloudinary.js";
+import {
+  actionIngredientsTools,
+  ingredientsAction,
+} from "./utils/cloudinary.js";
+import IngredientActionModel from "./schema/ActionIngredientsModel.js";
 
 dotenv.config();
 
@@ -63,7 +67,6 @@ app.use("/action-ingredients", actionIngredientsRoute);
 app.use("/action-tools", actionToolsRoute);
 app.use("/kitchen-tools", kitchenToolsRoute);
 
-
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -72,29 +75,26 @@ mongoose
   .then(async () => {
     console.log("Connected to MongoDB");
 
-    // for (const ingredientActionData of ingredientsAction) {
-    //   await IngredientActionModel.updateOne(
-    //     { name: ingredientActionData },
-    //     { $set: { name: ingredientActionData } },
-    //     { upsert: true }
-    //   );
-    // }
+    for (const ingredientActionData of ingredientsAction) {
+      await IngredientActionModel.updateOne(
+        { name: ingredientActionData },
+        { $set: { name: ingredientActionData } },
+        { upsert: true }
+      );
+    }
 
-    // for (const actionIngredientToolsData of actionIngredientsTools) { 
+    // for (const actionIngredientToolsData of actionIngredientsTools) {
     //   await ActionToolsModel.updateOne(
     //     { name: actionIngredientToolsData.name },
-    //     { 
-    //       $set: { 
+    //     {
+    //       $set: {
     //         name: actionIngredientToolsData.name,
-    //         category: actionIngredientToolsData.category 
+    //         category: actionIngredientToolsData.category
     //       }
     //     },
     //     { upsert: true }
     //   );
     // }
-
-
-    console.log("Default actions ensured in database ✅");
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);

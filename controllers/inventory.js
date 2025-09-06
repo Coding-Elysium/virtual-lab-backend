@@ -23,7 +23,9 @@ export const addInventory = async (req, res) => {
       .json({ success: true, message: "Inventory Success" });
   } catch (error) {
     console.error("Error adding inventorys:", error);
-    return res.status(500).json({ success: false, message: "Server error", error: error.message });
+    return res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
 
