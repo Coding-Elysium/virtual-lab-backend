@@ -6,11 +6,14 @@ export const addKitchenTools = async (req, res) => {
     const { name, actions } = req.body;
 
     if (!name || !Array.isArray(actions)) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Invalid Input",
       });
     }
+
+    // Convert ["bake","roast"] → [{action:"bake"}, {action:"roast"}]
+    const formattedActions = actions.map(a => ({ action: a }));
 
     let imageUrl = null;
 
@@ -23,7 +26,7 @@ export const addKitchenTools = async (req, res) => {
 
     const tool = new KitchenTools({
       name,
-      actions,
+      actions: formattedActions,
       image: imageUrl,
     });
 
@@ -31,7 +34,7 @@ export const addKitchenTools = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Kitchen Tools added successful",
+      message: "Kitchen Tools added successfully",
       data: tool,
     });
   } catch (error) {
@@ -45,11 +48,24 @@ export const addKitchenTools = async (req, res) => {
 
 export const readKitchenTools = async (req, res) => {
   try {
-    const tool = await KitchenTools.find();
+    const tools = await KitchenTools.find();
+
+    // Normalize actions → always return [{action:"..."}]
+    const formattedTools = tools.map(tool => {
+      const formattedActions = tool.actions.map(a =>
+        typeof a === "string" ? { action: a } : a
+      );
+
+      return {
+        ...tool._doc, // spread original mongoose document
+        actions: formattedActions,
+      };
+    });
+
     res.status(200).json({
       success: true,
       message: "Kitchen Tools Successfully Read",
-      data: tool,
+      data: formattedTools,
     });
   } catch (error) {
     res.status(500).json({

@@ -75,13 +75,13 @@ mongoose
   .then(async () => {
     console.log("Connected to MongoDB");
 
-    for (const ingredientActionData of ingredientsAction) {
-      await IngredientActionModel.updateOne(
-        { name: ingredientActionData },
-        { $set: { name: ingredientActionData } },
-        { upsert: true }
-      );
-    }
+    // for (const ingredientActionData of ingredientsAction) {
+    //   await IngredientActionModel.updateOne(
+    //     { name: ingredientActionData },
+    //     { $set: { name: ingredientActionData } },
+    //     { upsert: true }
+    //   );
+    // }
 
     // for (const actionIngredientToolsData of actionIngredientsTools) {
     //   await ActionToolsModel.updateOne(
