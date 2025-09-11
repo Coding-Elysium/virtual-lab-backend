@@ -1,31 +1,30 @@
 import Coc from "../schema/CocModel.js";
 import {
-  mainDishCombination,
-  sauceCombination,
-  soupCombination,
+  getMatchedCombination,
   VALID_PROCEDURES,
 } from "../utils/cloudinary.js";
 
-export const createCoc = async (req, res) => {
+export const createDish = async (req, res) => {
   try {
     const {
       type,
       studentId,
       category,
+      name,
       ingredients = [],
       equipments = [],
     } = req.body;
 
+    // Validate type
     const allowedTypes = ["coc1", "coc2", "coc3"];
     if (!allowedTypes.includes(type)) {
       return res.status(400).json({
         success: false,
-        message: `Invalid type "${type}". Must be one of ${allowedTypes.join(
-          ", "
-        )}.`,
+        message: `Invalid type "${type}". Must be one of ${allowedTypes.join(", ")}.`,
       });
     }
 
+    // Determine allowed categories for type
     let allowedCategory = [];
     if (type === "coc1") {
       allowedCategory = ["mainDish", "sauce", "soup"];
@@ -35,50 +34,41 @@ export const createCoc = async (req, res) => {
       allowedCategory = ["hotDessert", "coldDessert"];
     }
 
+    // Validate category
     if (!allowedCategory.includes(category)) {
       return res.status(400).json({
         success: false,
-        message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedCategory.join(
-          ", "
-        )}.`,
+        message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedCategory.join(", ")}.`,
       });
     }
 
-    const existingCocs = await Coc.find({ type, category, studentId });
+    // ✅ Submission limit: max 3 per category per student
+    const existingCount = await Coc.countDocuments({
+      studentId,
+      category,
+    });
 
-    if (type === "coc1" && category === "mainDish") {
-      if (existingCocs.length >= 3) {
-        return res.status(400).json({
-          success: false,
-          message: `You can only submit up to 3 "mainDish" for ${type}.`,
-        });
-      }
-    } else {
-      if (existingCocs.length > 0) {
-        return res.status(400).json({
-          success: false,
-          message: `You have already submitted "${category}" for ${type}.`,
-        });
-      }
+    if (existingCount >= 3) {
+      return res.status(400).json({
+        success: false,
+        message: `You have already submitted 3 dishes for the category "${category}".`,
+      });
     }
 
+    // Validate procedure
     const rules = VALID_PROCEDURES[category];
     let procedureStatus = "valid";
     let invalidReasons = [];
 
     if (!rules) {
       procedureStatus = "inappropriate";
-      invalidReasons.push(
-        `Category "${category}" is not in the valid procedures list.`
-      );
+      invalidReasons.push(`Category "${category}" is not in the valid procedures list.`);
     } else {
       for (const ing of ingredients) {
-        const allowedIngredient = rules.ingredients[ing.name];
+        const allowedIngredient = rules.ingredients[ing.name.toLowerCase()];
         if (!allowedIngredient) {
           procedureStatus = "inappropriate";
-          invalidReasons.push(
-            `Ingredient "${ing.name}" is not allowed for category "${category}".`
-          );
+          invalidReasons.push(`Ingredient "${ing.name}" is not allowed for category "${category}".`);
           continue;
         }
 
@@ -86,14 +76,10 @@ export const createCoc = async (req, res) => {
           const allowedTools = allowedIngredient[act.action];
           if (!allowedTools) {
             procedureStatus = "inappropriate";
-            invalidReasons.push(
-              `Invalid action "${act.action}" for ingredient "${ing.name}".`
-            );
+            invalidReasons.push(`Invalid action "${act.action}" for ingredient "${ing.name}".`);
           } else if (act.tool && !allowedTools.includes(act.tool)) {
             procedureStatus = "inappropriate";
-            invalidReasons.push(
-              `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
-            );
+            invalidReasons.push(`Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`);
           }
         }
       }
@@ -101,61 +87,17 @@ export const createCoc = async (req, res) => {
       for (const eq of equipments) {
         if (!rules.equipments.includes(eq.name)) {
           procedureStatus = "inappropriate";
-          invalidReasons.push(
-            `Equipment "${eq.name}" is not allowed for category "${category}".`
-          );
+          invalidReasons.push(`Equipment "${eq.name}" is not allowed for category "${category}".`);
         }
       }
     }
 
-    let matchedDishImage = null;
-    if (type === "coc1" && category === "mainDish") {
-      for (const dish of mainDishCombination) {
-        if (dish.type !== "mainDish") continue;
-
-        const submittedIngredients = ingredients.map((i) => i.name).sort();
-        const requiredIngredients = [...dish.contains].sort();
-
-        const isMatch = requiredIngredients.every((ing) =>
-          submittedIngredients.includes(ing)
-        );
-
-        if (isMatch) {
-          matchedDishImage = dish.image;
-          break;
-        }
-      }
-    } else if (type === "coc1" && category === "sauce") {
-      for (const dish of sauceCombination) {
-        if (dish.type !== "sauce") continue;
-        const submittedIngredients = ingredients.map((i) => i.name).sort();
-        const requiredIngredients = [...dish.contains].sort();
-        const isMatch = requiredIngredients.every((ing) =>
-          submittedIngredients.includes(ing)
-        );
-        if (isMatch) {
-          matchedDishImage = dish.image;
-          break;
-        }
-      }
-    } else if (type === "coc1" && category === "soup") {
-      for (const dish of soupCombination) {
-        if (dish.type !== "soup") continue;
-        const submittedIngredients = ingredients.map((i) => i.name).sort();
-        const requiredIngredients = [...dish.contains].sort();
-        const isMatch = requiredIngredients.every((ing) =>
-          submittedIngredients.includes(ing)
-        );
-        if (isMatch) {
-          matchedDishImage = dish.image;
-          break;
-        }
-      }
-    }
+    const matchedCombo = getMatchedCombination(category, ingredients);
 
     req.body.procedureStatus = procedureStatus;
     req.body.invalidReasons = invalidReasons;
-    req.body.matchedImage = matchedDishImage || null;
+    req.body.image = matchedCombo?.image || null;
+    req.body.name = matchedCombo?.name || name;
 
     const newCoc = new Coc(req.body);
     await newCoc.save();
@@ -167,7 +109,6 @@ export const createCoc = async (req, res) => {
           ? "COC created successfully"
           : "COC created with inappropriate procedure",
       data: newCoc,
-      matchedImage: matchedDishImage || "No matching dish found",
     });
   } catch (error) {
     console.error("Error creating COC:", error);
@@ -178,6 +119,440 @@ export const createCoc = async (req, res) => {
     });
   }
 };
+
+// export const createCoc = async (req, res) => {
+//   try {
+//     const {
+//       type,
+//       studentId,
+//       category,
+//       name,
+//       ingredients = [],
+//       equipments = [],
+//     } = req.body;
+
+//     const allowedTypes = ["coc1", "coc2", "coc3"];
+//     if (!allowedTypes.includes(type)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Invalid type "${type}". Must be one of ${allowedTypes.join(", ")}.`,
+//       });
+//     }
+
+//     let allowedCategory = [];
+//     if (type === "coc1") {
+//       allowedCategory = ["mainDish", "sauce", "soup"];
+//     } else if (type === "coc2") {
+//       allowedCategory = ["appetizer", "sandwich", "saladAndSaladDress"];
+//     } else if (type === "coc3") {
+//       allowedCategory = ["hotDessert", "coldDessert"];
+//     }
+
+//     if (!allowedCategory.includes(category)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedCategory.join(", ")}.`,
+//       });
+//     }
+
+//     const existingCocs = await Coc.find({ type, category, studentId });
+
+//     if (type === "coc1" && category === "mainDish") {
+//       if (existingCocs.length >= 3) {
+//         return res.status(400).json({
+//           success: false,
+//           message: `You can only submit up to 3 "mainDish" for ${type}.`,
+//         });
+//       }
+//     } else {
+//       if (existingCocs.length > 0) {
+//         return res.status(400).json({
+//           success: false,
+//           message: `You have already submitted "${category}" for ${type}.`,
+//         });
+//       }
+//     }
+
+//     const rules = VALID_PROCEDURES[category];
+//     let procedureStatus = "valid";
+//     let invalidReasons = [];
+
+//     if (!rules) {
+//       procedureStatus = "inappropriate";
+//       invalidReasons.push(`Category "${category}" is not in the valid procedures list.`);
+//     } else {
+//       for (const ing of ingredients) {
+//         const allowedIngredient = rules.ingredients[ing.name.toLowerCase()];
+//         if (!allowedIngredient) {
+//           procedureStatus = "inappropriate";
+//           invalidReasons.push(`Ingredient "${ing.name}" is not allowed for category "${category}".`);
+//           continue;
+//         }
+
+//         for (const act of ing.actions || []) {
+//           const allowedTools = allowedIngredient[act.action];
+//           if (!allowedTools) {
+//             procedureStatus = "inappropriate";
+//             invalidReasons.push(`Invalid action "${act.action}" for ingredient "${ing.name}".`);
+//           } else if (act.tool && !allowedTools.includes(act.tool)) {
+//             procedureStatus = "inappropriate";
+//             invalidReasons.push(
+//               `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
+//             );
+//           }
+//         }
+//       }
+
+//       for (const eq of equipments) {
+//         if (!rules.equipments.includes(eq.name)) {
+//           procedureStatus = "inappropriate";
+//           invalidReasons.push(
+//             `Equipment "${eq.name}" is not allowed for category "${category}".`
+//           );
+//         }
+//       }
+//     }
+
+//     const matchedCombo = getMatchedCombination(category, ingredients);
+
+//     req.body.procedureStatus = procedureStatus;
+//     req.body.invalidReasons = invalidReasons;
+//     req.body.image = matchedCombo?.image || null;
+//     req.body.name = matchedCombo?.name || name; 
+
+//     const newCoc = new Coc(req.body);
+//     await newCoc.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message:
+//         procedureStatus === "valid"
+//           ? "COC created successfully"
+//           : "COC created with inappropriate procedure",
+//       data: newCoc,
+//       matchedImage: matchedCombo?.image || "No matching dish found",
+//     });
+//   } catch (error) {
+//     console.error("Error creating COC:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// export const createCoc = async (req, res) => {
+//   try {
+//     const {
+//       type,
+//       studentId,
+//       category,
+//       ingredients = [],
+//       equipments = [],
+//     } = req.body;
+
+//     const allowedTypes = ["coc1", "coc2", "coc3"];
+//     if (!allowedTypes.includes(type)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Invalid type "${type}". Must be one of: ${allowedTypes.join(", ")}`,
+//       });
+//     }
+
+//     // Define allowed categories by type
+//     const typeCategoryMap = {
+//       coc1: ["mainDish", "sauce", "soup"],
+//       coc2: ["appetizer", "sandwich", "saladAndSaladDress"],
+//       coc3: ["hotDessert", "coldDessert"],
+//     };
+
+//     const allowedCategory = typeCategoryMap[type];
+//     if (!allowedCategory.includes(category)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Invalid category "${category}" for type "${type}". Must be one of: ${allowedCategory.join(", ")}`,
+//       });
+//     }
+
+//     // Prevent duplicate submissions
+//     const existingCocs = await Coc.find({ type, category, studentId });
+//     if (type === "coc1" && category === "mainDish" && existingCocs.length >= 3) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `You can only submit up to 3 "mainDish" entries for ${type}.`,
+//       });
+//     } else if (existingCocs.length > 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `You have already submitted "${category}" for ${type}.`,
+//       });
+//     }
+
+//     // Begin Procedure Validation
+//     const rules = VALID_PROCEDURES[category];
+//     let procedureStatus = "valid";
+//     let invalidReasons = [];
+
+//     if (!rules) {
+//       procedureStatus = "inappropriate";
+//       invalidReasons.push(`Category "${category}" is not in the valid procedures list.`);
+//     } else {
+//       for (const ing of ingredients) {
+//         const ingredientName = ing.name?.toLowerCase(); // Normalize name
+//         const allowedIngredient = rules.ingredients[ingredientName];
+
+//         if (!allowedIngredient) {
+//           procedureStatus = "inappropriate";
+//           invalidReasons.push(`Ingredient "${ing.name}" is not allowed for category "${category}".`);
+//           continue;
+//         }
+
+//         for (const act of ing.actions || []) {
+//           const allowedTools = allowedIngredient[act.action];
+
+//           if (!allowedTools) {
+//             procedureStatus = "inappropriate";
+//             invalidReasons.push(`Invalid action "${act.action}" for ingredient "${ing.name}".`);
+//           } else if (act.tool && !allowedTools.includes(act.tool)) {
+//             procedureStatus = "inappropriate";
+//             invalidReasons.push(`Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`);
+//           }
+//         }
+//       }
+
+//       for (const eq of equipments) {
+//         if (!rules.equipments.includes(eq.name)) {
+//           procedureStatus = "inappropriate";
+//           invalidReasons.push(`Equipment "${eq.name}" is not allowed for category "${category}".`);
+//         }
+//       }
+//     }
+
+//     // Dish Matching
+//     let matchedDishImage = null;
+//     const submittedIngredientNames = ingredients.map((i) => i.name?.toLowerCase()).sort();
+
+//     const matchFromCombinations = (combinations) => {
+//       for (const dish of combinations) {
+//         const requiredIngredients = [...dish.contains].map((x) => x.toLowerCase()).sort();
+//         const isMatch = requiredIngredients.every((ri) => submittedIngredientNames.includes(ri));
+//         if (isMatch) return dish.image;
+//       }
+//       return null;
+//     };
+
+//     if (type === "coc1") {
+//       if (category === "mainDish") matchedDishImage = matchFromCombinations(mainDishCombination);
+//       else if (category === "sauce") matchedDishImage = matchFromCombinations(sauceCombination);
+//       else if (category === "soup") matchedDishImage = matchFromCombinations(soupCombination);
+//     }
+
+//     // Create new COC record
+//     req.body.procedureStatus = procedureStatus;
+//     req.body.invalidReasons = invalidReasons;
+//     req.body.matchedImage = matchedDishImage;
+
+//     const newCoc = new Coc(req.body);
+//     await newCoc.save();
+
+//     return res.status(200).json({
+//       success: true,
+//       message: procedureStatus === "valid"
+//         ? "COC created successfully"
+//         : "COC created with inappropriate procedure",
+//       data: newCoc,
+//       matchedImage: matchedDishImage || "No matching dish found",
+//     });
+
+//   } catch (error) {
+//     console.error("Error creating COC:", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//       error: error.message,
+//     });
+//   }
+// };
+
+
+
+
+
+
+
+// export const createCoc = async (req, res) => {
+//   try {
+//     const {
+//       type,
+//       studentId,
+//       category,
+//       ingredients = [],
+//       equipments = [],
+//     } = req.body;
+
+//     const allowedTypes = ["coc1", "coc2", "coc3"];
+//     if (!allowedTypes.includes(type)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Invalid type "${type}". Must be one of ${allowedTypes.join(
+//           ", "
+//         )}.`,
+//       });
+//     }
+
+//     let allowedCategory = [];
+//     if (type === "coc1") {
+//       allowedCategory = ["mainDish", "sauce", "soup"];
+//     } else if (type === "coc2") {
+//       allowedCategory = ["appetizer", "sandwich", "saladAndSaladDress"];
+//     } else if (type === "coc3") {
+//       allowedCategory = ["hotDessert", "coldDessert"];
+//     }
+
+//     if (!allowedCategory.includes(category)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedCategory.join(
+//           ", "
+//         )}.`,
+//       });
+//     }
+
+//     const existingCocs = await Coc.find({ type, category, studentId });
+
+//     if (type === "coc1" && category === "mainDish") {
+//       if (existingCocs.length >= 3) {
+//         return res.status(400).json({
+//           success: false,
+//           message: `You can only submit up to 3 "mainDish" for ${type}.`,
+//         });
+//       }
+//     } else {
+//       if (existingCocs.length > 0) {
+//         return res.status(400).json({
+//           success: false,
+//           message: `You have already submitted "${category}" for ${type}.`,
+//         });
+//       }
+//     }
+
+//     const rules = VALID_PROCEDURES[category];
+//     let procedureStatus = "valid";
+//     let invalidReasons = [];
+
+//     if (!rules) {
+//       procedureStatus = "inappropriate";
+//       invalidReasons.push(
+//         `Category "${category}" is not in the valid procedures list.`
+//       );
+//     } else {
+//       for (const ing of ingredients) {
+//         const allowedIngredient = rules.ingredients[ing.name];
+//         if (!allowedIngredient) {
+//           procedureStatus = "inappropriate";
+//           invalidReasons.push(
+//             `Ingredient "${ing.name}" is not allowed for category "${category}".`
+//           );
+//           continue;
+//         }
+
+//         for (const act of ing.actions || []) {
+//           const allowedTools = allowedIngredient[act.action];
+//           if (!allowedTools) {
+//             procedureStatus = "inappropriate";
+//             invalidReasons.push(
+//               `Invalid action "${act.action}" for ingredient "${ing.name}".`
+//             );
+//           } else if (act.tool && !allowedTools.includes(act.tool)) {
+//             procedureStatus = "inappropriate";
+//             invalidReasons.push(
+//               `Tool "${act.tool}" is not valid for action "${act.action}" on "${ing.name}".`
+//             );
+//           }
+//         }
+//       }
+
+//       for (const eq of equipments) {
+//         if (!rules.equipments.includes(eq.name)) {
+//           procedureStatus = "inappropriate";
+//           invalidReasons.push(
+//             `Equipment "${eq.name}" is not allowed for category "${category}".`
+//           );
+//         }
+//       }
+//     }
+
+//     let matchedDishImage = null;
+//     if (type === "coc1" && category === "mainDish") {
+//       for (const dish of mainDishCombination) {
+//         if (dish.type !== "mainDish") continue;
+
+//         const submittedIngredients = ingredients.map((i) => i.name).sort();
+//         const requiredIngredients = [...dish.contains].sort();
+
+//         const isMatch = requiredIngredients.every((ing) =>
+//           submittedIngredients.includes(ing)
+//         );
+
+//         if (isMatch) {
+//           matchedDishImage = dish.image;
+//           break;
+//         }
+//       }
+//     } else if (type === "coc1" && category === "sauce") {
+//       for (const dish of sauceCombination) {
+//         if (dish.type !== "sauce") continue;
+//         const submittedIngredients = ingredients.map((i) => i.name).sort();
+//         const requiredIngredients = [...dish.contains].sort();
+//         const isMatch = requiredIngredients.every((ing) =>
+//           submittedIngredients.includes(ing)
+//         );
+//         if (isMatch) {
+//           matchedDishImage = dish.image;
+//           break;
+//         }
+//       }
+//     } else if (type === "coc1" && category === "soup") {
+//       for (const dish of soupCombination) {
+//         if (dish.type !== "soup") continue;
+//         const submittedIngredients = ingredients.map((i) => i.name).sort();
+//         const requiredIngredients = [...dish.contains].sort();
+//         const isMatch = requiredIngredients.every((ing) =>
+//           submittedIngredients.includes(ing)
+//         );
+//         if (isMatch) {
+//           matchedDishImage = dish.image;
+//           break;
+//         }
+//       }
+//     }
+
+//     req.body.procedureStatus = procedureStatus;
+//     req.body.invalidReasons = invalidReasons;
+//     req.body.matchedImage = matchedDishImage || null;
+
+//     const newCoc = new Coc(req.body);
+//     await newCoc.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message:
+//         procedureStatus === "valid"
+//           ? "COC created successfully"
+//           : "COC created with inappropriate procedure",
+//       data: newCoc,
+//       matchedImage: matchedDishImage || "No matching dish found",
+//     });
+//   } catch (error) {
+//     console.error("Error creating COC:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//       error: error.message,
+//     });
+//   }
+// };
 
 // export const createCoc = async (req, res) => {
 //   try {
@@ -436,7 +811,7 @@ export const createCoc = async (req, res) => {
 //     res.status(500).json({ success: false, message: "Server error", error: error.message });
 //   }
 // };
-
+  
 export const getStudentCoc = async (req, res) => {
   try {
     const { type } = req.query;

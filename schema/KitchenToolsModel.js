@@ -23,3 +23,4 @@ KitchenToolsSchema.pre("save", function (next) {
 const KitchenTools = mongoose.model("KitchenTools", KitchenToolsSchema);
 
 export default KitchenTools;
+

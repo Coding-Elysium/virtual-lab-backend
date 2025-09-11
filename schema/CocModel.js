@@ -1,55 +1,69 @@
 import mongoose from "mongoose";
 
+// Action performed on ingredients
 const actionSchema = new mongoose.Schema(
   {
-    action:{
+    action: {
       type: String,
       required: true,
     },
     status: {
       type: String,
-      required: true
+      required: true,
     },
     tool: {
-      type: String, 
-      required: true,
-    }
+      type: String,
+      required: false, // Some tools can be empty string in your data
+    },
   },
   { _id: false }
-)
+);
 
-
-const ingredientsSchema = new mongoose.Schema(
+// "Used" — e.g., used Freezer or Grill with specific actions
+const usedActionSchema = new mongoose.Schema(
   {
-    name: {
+    action: {
       type: String,
       required: true,
     },
-    actions: {
-      type: [actionSchema],
+    status: {
+      type: String,
       required: true,
-    }
+    },
+    tool: {
+      type: String,
+      required: false,
+    },
   },
   { _id: false }
-)
+);
 
-const equipmentSchema = new mongoose.Schema(
+const usedSchema = new mongoose.Schema(
   {
     name: {
-      type: String, 
+      type: String,
       required: true,
     },
     image: {
       type: String,
       required: true,
-    }
+    },
+    actions: {
+      type: [usedActionSchema],
+      required: true,
+    },
   },
   { _id: false }
-)
+);
 
-const cocSchema = new mongoose.Schema(
+// Full ingredient schema with image, category, actions, and used
+const ingredientSchema = new mongoose.Schema(
   {
-    type: {
+    name: {
+      type: String,
+      required: true,
+    },
+    image: {
       type: String,
       required: true,
     },
@@ -57,39 +71,74 @@ const cocSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    actions: {
+      type: [actionSchema],
+      required: true,
+    },
+    used: {
+      type: usedSchema,
+      required: false,
+    },
+  },
+  { _id: false }
+);
+
+// Equipment schema
+const equipmentSchema = new mongoose.Schema(
+  {
     name: {
       type: String,
       required: true,
     },
-    studentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Student",
-      required: true,
-    },
-    ingredients: {
-      type: [ingredientsSchema],
-      required: true,
-    },
     image: {
       type: String,
-      required: true
-    },  
-    equipments: {
-      type: [equipmentSchema],
       required: true,
     },
+  },
+  { _id: false }
+);
 
-    procedureStatus: {
-      type: String,
-      enum: ["valid", "inappropriate"],
-      default: "valid",
-    },
-    invalidReasons: {
-      type: [String],
-      default: [],
-    },
-  }
-)
+// Main COC schema
+const cocSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  studentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Student",
+    required: true,
+  },
+  ingredients: {
+    type: [ingredientSchema],
+    required: true,
+  },
+  image: {
+    type: String,
+    required: false, // This is dynamically matched. Make optional.
+  },
+  equipments: {
+    type: [equipmentSchema],
+    required: true,
+  },
+  procedureStatus: {
+    type: String,
+    enum: ["valid", "inappropriate"],
+    default: "valid",
+  },
+  invalidReasons: {
+    type: [String],
+    default: [],
+  },
+});
 
 const Coc = mongoose.model("Coc", cocSchema);
 export default Coc;

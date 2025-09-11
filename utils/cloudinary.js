@@ -296,42 +296,42 @@ export const VALID_PROCEDURES = {
 export const soupCombination = [
   //? SOUP
   {
-    name: "fish soup",
+    // name: "fish soup",
     type: "soup",
     contains: ["fish", "water", "ginger"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/fish_soup_eqlcfh.png",
   },
   {
-    name: "chicken soup",
+    // name: "chicken soup",
     type: "soup",
     contains: ["chicken", "water", "carrot", "onion"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/chicken_soup_pm4xzq.png",
   },
   {
-    name: "tofu soup",
+    // name: "tofu soup",
     type: "soup",
     contains: ["tofu", "water", "mushroom", "ginger"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802662/tofu_soup_z1r3cb.png",
   },
   {
-    name: "vegetable soup",
+    // name: "vegetable soup",
     type: "soup",
     contains: ["cabbage", "carrot", "onion", "water"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/vegetable_soup_gcqvot.png",
   },
   {
-    name: "beef soup",
+    // name: "beef soup",
     type: "soup",
     contains: ["beef", "water", "onion", "potato"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/beef_soup_ihgwhv.png",
   },
   {
-    name: "egg drop soup",
+    // name: "egg drop soup",
     type: "soup",
     contains: ["egg", "water", "cornstarch", "salt"],
     image:
@@ -341,49 +341,50 @@ export const soupCombination = [
 
 export const mainDishCombination = [
   {
-    name: "fried rice",
+    // name: "fried rice",
     type: "mainDish",
+    // contains: ["rice"],
     contains: ["rice", "egg", "soy sauce", "onion"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/fried_rice_xufyck.png",
   },
   {
-    name: "sweet and sour pork",
+    // name: "sweet and sour pork",
     type: "mainDish",
     contains: ["pork", "vinegar", "sugar", "tomato paste", "bell pepper"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/sweet_and_sour_pork_vpyp3c.png",
   },
   {
-    name: "chicken adobo",
+    // name: "chicken adobo",
     type: "mainDish",
     contains: ["chicken", "soy sauce", "vinegar", "garlic", "onion"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/chicken_adobo_thpfhn.png",
   },
   {
-    name: "beef stew",
+    // name: "beef stew",
     type: "mainDish",
     contains: ["beef", "potato", "carrot", "onion"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804254/beef_stew_f93kye.png",
   },
   {
-    name: "tofu stir fry",
+    // name: "tofu stir fry",
     type: "mainDish",
     contains: ["tofu", "soy sauce", "garlic", "bell pepper", "onion"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/tofu_stir_fry_sdfgak.png",
   },
   {
-    name: "egg noodles",
+    // name: "egg noodles",
     type: "mainDish",
     contains: ["noodles", "egg", "butter", "onion", "soy sauce"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804252/egg_noodles_ltyrfo.png",
   },
   {
-    name: "mushroom rice",
+    // name: "mushroom rice",
     type: "mainDish",
     contains: ["rice", "mushroom", "onion", "butter"],
     image:
@@ -393,41 +394,104 @@ export const mainDishCombination = [
 
 export const sauceCombination = [
   {
-    name: "sweet and sour sauce",
+    // name: "sweet and sour sauce",
     type: "sauce",
     contains: ["vinegar", "sugar", "tomato paste"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
   },
   {
-    name: "soy garlic sauce",
+    // name: "soy garlic sauce",
     type: "sauce",
     contains: ["soy sauce", "garlic", "sugar"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_3_lrpzsl.png",
   },
   {
-    name: "spicy chili sauce",
+    // name: "spicy chili sauce",
     type: "sauce",
     contains: ["chili flakes", "garlic", "vinegar"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
   },
   {
-    name: "butter sauce",
+    // name: "butter sauce",
     type: "sauce",
     contains: ["butter", "garlic", "onion"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823049/sauce_1_pimwnm.png",
   },
   {
-    name: "tomato-based sauce",
+    // name: "tomato-based sauce",
     type: "sauce",
     contains: ["tomato paste", "garlic", "onion", "sugar"],
     image:
       "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
   },
 ];
+
+export const getMatchedCombination = (category, ingredients) => {
+  const ingredientNames = ingredients
+    .map((ing) => ing.name.toLowerCase())
+    .sort();
+
+  let combinationList = [];
+
+  switch (category) {
+    case "mainDish":
+      combinationList = mainDishCombination;
+      break;
+    case "soup":
+      combinationList = soupCombination;
+      break;
+    case "sauce":
+      combinationList = sauceCombination;
+      break;
+    default:
+      return null;
+  }
+
+  // Check for a matching combination
+  for (const combo of combinationList) {
+    const requiredIngredients = combo.contains.map((i) => i.toLowerCase()).sort();
+
+    const isMatch = requiredIngredients.every((ing) =>
+      ingredientNames.includes(ing)
+    );
+
+    if (isMatch) {
+      return combo; 
+    }
+  }
+
+  const fallbackCombinations = {
+    mainDish: {
+      // name: "Basic Dish",
+      type: "mainDish",
+      // contains: ["tomato paste", "garlic", "onion", "sugar"],
+      image:
+        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+    },
+    sauce: {
+      // name: "Basic Sauce",
+      type: "sauce",
+      // contains: ["tomato paste", "garlic", "onion", "sugar"],
+      image:
+        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+    },
+    soup: {
+      // name: "Basic Soup",
+      type: "soup",
+      // contains: ["tomato paste", "garlic", "onion", "sugar"],
+      image:
+        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+    },
+  };
+
+  return fallbackCombinations[category] || null;
+};
+
+
 
 // export const actionTools = [
 //   { name: "chop", tools: ["knife", "chopper", "cleaver", "paringKnife"] },

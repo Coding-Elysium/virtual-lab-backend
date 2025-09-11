@@ -1,8 +1,8 @@
 import express from "express";
-import { createCoc, getStudentCoc } from "../controllers/coc.js";
+import { createDish, getStudentCoc } from "../controllers/coc.js";
 
 const router = express.Router();
-router.post("/create", createCoc);
+router.post("/create", createDish);
 router.get("/read/:studentId", getStudentCoc);
 
 export default router;
