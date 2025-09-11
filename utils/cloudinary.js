@@ -451,16 +451,17 @@ export const getMatchedCombination = (category, ingredients) => {
       return null;
   }
 
-  // Check for a matching combination
   for (const combo of combinationList) {
-    const requiredIngredients = combo.contains.map((i) => i.toLowerCase()).sort();
+    const requiredIngredients = combo.contains
+      .map((i) => i.toLowerCase())
+      .sort();
 
     const isMatch = requiredIngredients.every((ing) =>
       ingredientNames.includes(ing)
     );
 
     if (isMatch) {
-      return combo; 
+      return combo;
     }
   }
 
@@ -490,8 +491,6 @@ export const getMatchedCombination = (category, ingredients) => {
 
   return fallbackCombinations[category] || null;
 };
-
-
 
 // export const actionTools = [
 //   { name: "chop", tools: ["knife", "chopper", "cleaver", "paringKnife"] },

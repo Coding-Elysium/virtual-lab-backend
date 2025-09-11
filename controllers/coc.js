@@ -1,36 +1,42 @@
-import { validateProcedures, validateSubmissionLimit, validateTypeAndCategory } from "../helpers/helpers.js";
-import Coc from "../schema/CocModel.js";
 import {
-  getMatchedCombination,
-} from "../utils/cloudinary.js";
+  validateProcedures,
+  validateSubmissionLimit,
+  validateTypeAndCategory,
+} from "../helpers/helpers.js";
+import Coc from "../schema/CocModel.js";
+import { getMatchedCombination } from "../utils/cloudinary.js";
 
 export const createDish = async (req, res) => {
   try {
-    const { type, studentId, category, name, ingredients = [], equipments = [], procedureSteps = [] } = req.body;
+    const {
+      type,
+      studentId,
+      category,
+      name,
+      ingredients = [],
+      equipments = [],
+      procedureSteps = [],
+    } = req.body;
 
-    // 1. Validate type & category
     const typeCategoryCheck = validateTypeAndCategory(type, category);
     if (!typeCategoryCheck.valid) {
-      return res.status(400).json({ success: false, message: typeCategoryCheck.message });
+      return res
+        .status(400)
+        .json({ success: false, message: typeCategoryCheck.message });
     }
 
-    // 2. Validate submission limit
     const submissionCheck = await validateSubmissionLimit(studentId, category);
     if (!submissionCheck.valid) {
-      return res.status(400).json({ success: false, message: submissionCheck.message });
+      return res
+        .status(400)
+        .json({ success: false, message: submissionCheck.message });
     }
 
-    // 3. Validate procedure steps
-    const { status: procedureStatus, reasons: invalidReasons } = validateProcedures(
-      category,
-      procedureSteps,
-      equipments
-    );
+    const { status: procedureStatus, reasons: invalidReasons } =
+      validateProcedures(category, procedureSteps, equipments);
 
-    // 4. Assign result (if combination matches)
     const matchedCombo = getMatchedCombination(category, ingredients);
 
-    // 5. Save dish
     const newCoc = new Coc({
       type,
       studentId,
@@ -41,6 +47,7 @@ export const createDish = async (req, res) => {
       procedureSteps,
       result: matchedCombo?.image || null,
       procedureStatus,
+      equipments,
       invalidReasons,
     });
 
@@ -278,7 +285,7 @@ export const createDish = async (req, res) => {
 //     req.body.procedureStatus = procedureStatus;
 //     req.body.invalidReasons = invalidReasons;
 //     req.body.image = matchedCombo?.image || null;
-//     req.body.name = matchedCombo?.name || name; 
+//     req.body.name = matchedCombo?.name || name;
 
 //     const newCoc = new Coc(req.body);
 //     await newCoc.save();
@@ -301,7 +308,7 @@ export const createDish = async (req, res) => {
 //     });
 //   }
 // };
-  
+
 export const getStudentCoc = async (req, res) => {
   try {
     const { type } = req.query;

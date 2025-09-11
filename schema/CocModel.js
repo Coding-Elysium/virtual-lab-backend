@@ -156,6 +156,10 @@ const actionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
     action: {
       type: String,
       required: true,
@@ -190,19 +194,19 @@ const procedureStepsSchema = new mongoose.Schema(
   {
     ingredients: {
       type: [String],
-      required: true
+      required: true,
     },
     action: {
       type: String,
-      required: true
+      required: true,
     },
     tool: {
       type: String,
-      required: true
+      required: true,
     },
     status: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
@@ -211,24 +215,24 @@ const procedureStepsSchema = new mongoose.Schema(
     image: {
       type: String,
       required: true,
-    }
+    },
   },
   { _id: false }
-)
+);
 
 const cocSchema = new mongoose.Schema(
   {
     type: {
       type: String,
-      required: true
+      required: true,
     },
     category: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -241,17 +245,23 @@ const cocSchema = new mongoose.Schema(
     },
     procedureSteps: {
       type: [procedureStepsSchema],
-      required: true
+      required: true,
     },
     invalidReasons: {
       type: [String],
       default: [],
     },
+    equipment: {
+      type: [String],
+      required: true,
+    },
     result: {
       type: [String],
-      required: true
-    }
-  }, { timestamps: true });
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 const Coc = mongoose.model("Coc", cocSchema);
 
