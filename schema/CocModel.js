@@ -152,7 +152,7 @@ import mongoose from "mongoose";
 
 const actionSchema = new mongoose.Schema(
   {
-    tools: {
+    tool: {
       type: String,
       required: true,
     },
