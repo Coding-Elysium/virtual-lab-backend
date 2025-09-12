@@ -239,6 +239,9 @@ const cocSchema = new mongoose.Schema(
       ref: "Student",
       required: true,
     },
+    label: {
+      type: String,
+    },  
     ingredients: {
       type: [ingredientSchema],
       required: true,
@@ -255,8 +258,8 @@ const cocSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
-    result: {
-      type: [String],
+    image: {
+      type: String,
       required: true,
     },
   },
