@@ -49,9 +49,88 @@ export const validateSubmissionLimit = async (studentId, category) => {
   return { valid: true };
 };
 
-export const validateProcedures = (procedureSteps, ingredients) => {
+// export const validateProcedures = (procedureSteps, ingredients) => {
+//   const invalidReasons = [];
+//   let procedureStatus = "valid";
+
+//   if (!Array.isArray(ingredients) || ingredients.length === 0) {
+//     return {
+//       status: "inappropriate",
+//       reasons: ["Ingredients list is missing or empty."],
+//     };
+//   }
+
+//   procedureSteps.forEach((step, stepIndex) => {
+//     let stepHasError = false;
+
+//     step.ingredients.forEach((ingName) => {
+//       const normalizedIng = ingName.trim().toLowerCase();
+//       const ingredientData = ingredients.find(
+//         (ing) => ing.name.trim().toLowerCase() === normalizedIng
+//       );
+
+//       if (!ingredientData) {
+//         procedureStatus = "inappropriate";
+//         invalidReasons.push(
+//           `Step ${
+//             stepIndex + 1
+//           }: Ingredient "${ingName}" is not listed in the provided ingredients.`
+//         );
+//         stepHasError = true;
+//         return;
+//       }
+
+//       // Find if this ingredient allows this action
+//       const matchingAction = ingredientData.actions.find(
+//         (a) =>
+//           a.action.toLowerCase() === step.action.toLowerCase() &&
+//           (!step.tool || a.tool.toLowerCase() === step.tool.toLowerCase())
+//       );
+
+//       if (!matchingAction) {
+//         procedureStatus = "inappropriate";
+//         invalidReasons.push(
+//           `Step ${stepIndex + 1}: Action "${step.action}" with tool "${
+//             step.tool
+//           }" is not valid for ingredient "${ingName}".`
+//         );
+//         stepHasError = true;
+//         return;
+//       }
+
+//       // Check status
+//       if (
+//         step.status &&
+//         matchingAction.status.toLowerCase() !== step.status.toLowerCase()
+//       ) {
+//         procedureStatus = "inappropriate";
+//         invalidReasons.push(
+//           `Step ${stepIndex + 1}: Status "${
+//             step.status
+//           }" does not match expected "${
+//             matchingAction.status
+//           }" for "${ingName}".`
+//         );
+//         stepHasError = true;
+//       }
+//     });
+
+//     if (!stepHasError) {
+//       const ingList = step.ingredients.map((ing) => `"${ing}"`).join(", ");
+//       invalidReasons.push(
+//         `✅ Step ${stepIndex + 1}: "${step.action}" on ${ingList} using "${
+//           step.tool
+//         }" → status "${step.status}".`
+//       );
+//     }
+//   });
+
+//   return { status: procedureStatus, reasons: invalidReasons };
+// };
+
+export const validateIngredients = (ingredients) => {
   const invalidReasons = [];
-  let procedureStatus = "valid";
+  let status = "valid";
 
   if (!Array.isArray(ingredients) || ingredients.length === 0) {
     return {
@@ -60,72 +139,43 @@ export const validateProcedures = (procedureSteps, ingredients) => {
     };
   }
 
-  procedureSteps.forEach((step, stepIndex) => {
-    let stepHasError = false;
+  ingredients.forEach((ingredient) => {
+    if (!ingredient.name) {
+      status = "inappropriate";
+      invalidReasons.push("Ingredient is missing a name.");
+    }
 
-    step.ingredients.forEach((ingName) => {
-      const normalizedIng = ingName.trim().toLowerCase();
-      const ingredientData = ingredients.find(
-        (ing) => ing.name.trim().toLowerCase() === normalizedIng
+    if (!ingredient.actions || ingredient.actions.length === 0) {
+      status = "inappropriate";
+      invalidReasons.push(
+        `Ingredient "${ingredient.name}" has no actions defined.`
       );
+      return;
+    }
 
-      if (!ingredientData) {
-        procedureStatus = "inappropriate";
+    ingredient.actions.forEach((actionObj) => {
+      if (!actionObj.action) {
+        status = "inappropriate";
         invalidReasons.push(
-          `Step ${
-            stepIndex + 1
-          }: Ingredient "${ingName}" is not listed in the provided ingredients.`
+          `Ingredient "${ingredient.name}" is missing an action.`
         );
-        stepHasError = true;
-        return;
       }
-
-      // Find if this ingredient allows this action
-      const matchingAction = ingredientData.actions.find(
-        (a) =>
-          a.action.toLowerCase() === step.action.toLowerCase() &&
-          (!step.tool || a.tool.toLowerCase() === step.tool.toLowerCase())
-      );
-
-      if (!matchingAction) {
-        procedureStatus = "inappropriate";
+      if (!actionObj.tool) {
+        status = "inappropriate";
         invalidReasons.push(
-          `Step ${stepIndex + 1}: Action "${step.action}" with tool "${
-            step.tool
-          }" is not valid for ingredient "${ingName}".`
+          `Ingredient "${ingredient.name}" action "${actionObj.action}" is missing a tool.`
         );
-        stepHasError = true;
-        return;
       }
-
-      // Check status
-      if (
-        step.status &&
-        matchingAction.status.toLowerCase() !== step.status.toLowerCase()
-      ) {
-        procedureStatus = "inappropriate";
+      if (!actionObj.status) {
+        status = "inappropriate";
         invalidReasons.push(
-          `Step ${stepIndex + 1}: Status "${
-            step.status
-          }" does not match expected "${
-            matchingAction.status
-          }" for "${ingName}".`
+          `Ingredient "${ingredient.name}" action "${actionObj.action}" is missing a status.`
         );
-        stepHasError = true;
       }
     });
-
-    if (!stepHasError) {
-      const ingList = step.ingredients.map((ing) => `"${ing}"`).join(", ");
-      invalidReasons.push(
-        `✅ Step ${stepIndex + 1}: "${step.action}" on ${ingList} using "${
-          step.tool
-        }" → status "${step.status}".`
-      );
-    }
   });
 
-  return { status: procedureStatus, reasons: invalidReasons };
+  return { status, reasons: invalidReasons };
 };
 
 // export const validateProcedures = (procedureSteps) => {

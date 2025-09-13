@@ -1,5 +1,5 @@
 import {
-  validateProcedures,
+  validateIngredients,
   validateSubmissionLimit,
   validateTypeAndCategory,
 } from "../helpers/helpers.js";
@@ -34,7 +34,7 @@ export const createDish = async (req, res) => {
     }
 
     const { status: procedureStatus, reasons: invalidReasons } =
-      validateProcedures(procedureSteps, ingredients);
+      validateIngredients(ingredients);
 
     const matchedCombo = getMatchedCombination(category, ingredients);
 

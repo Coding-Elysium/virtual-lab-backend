@@ -779,7 +779,7 @@ export const getMatchedCombination = (category, ingredients) => {
       type: "mainDish",
       // contains: ["tomato paste", "garlic", "onion", "sugar"],
       image:
-        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/chicken_adobo_thpfhn.png",
     },
     sauce: {
       // name: "Basic Sauce",
@@ -793,7 +793,7 @@ export const getMatchedCombination = (category, ingredients) => {
       type: "soup",
       // contains: ["tomato paste", "garlic", "onion", "sugar"],
       image:
-        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+        "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/beef_soup_ihgwhv.png",
     },
   };
 
