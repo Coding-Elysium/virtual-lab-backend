@@ -34,8 +34,7 @@ export const createDish = async (req, res) => {
     }
 
     const { status: procedureStatus, reasons: invalidReasons } =
-      validateProcedures(category, procedureSteps, equipments);
-
+      validateProcedures(procedureSteps);
     const matchedCombo = getMatchedCombination(category, ingredients);
 
     const newCoc = new Coc({
@@ -47,10 +46,9 @@ export const createDish = async (req, res) => {
       ingredients,
       image: matchedCombo?.image,
       equipments,
+      invalidReasons,
       procedureSteps,
       procedureStatus,
-      equipments,
-      invalidReasons,
     });
 
     await newCoc.save();

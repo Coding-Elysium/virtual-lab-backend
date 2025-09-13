@@ -88,210 +88,518 @@ export const actionIngredientsTools = [
 ];
 
 export const VALID_PROCEDURES = {
-  sauce: {
-    ingredients: {
-      garlic: {
-        peel: ["hand"],
-        chop: ["knife"],
-      },
-      sugar: {
-        measure: ["spoon"],
-      },
-      vinegar: {
-        measure: ["spoon"],
-        sprinkle: ["shaker"],
-      },
-      tomatoPaste: {
-        scoop: ["spoon"],
-      },
-      cornstarch: {
-        mix: ["bowl", "spoon"],
-      },
-      chiliFlakes: {
-        measure: ["spoon"],
-      },
-      soySauce: {
-        measure: ["spoon"],
-      },
-      ginger: {
-        peel: ["knife"],
-        slice: ["knife"],
-      },
-      springOnion: {
-        wash: ["hand", "water"],
-        chop: ["knife"],
-      },
-      oil: {
-        pour: ["spoon"],
-      },
-      salt: {
-        measure: ["spoon"],
-      },
-      butter: {
-        scoop: ["spoon"],
-      },
-      milkOrCream: {
-        pour: ["cup"],
-      },
-      onion: {
-        peel: ["hand"],
-        chop: ["knife"],
-      },
+  ingredients: {
+    garlic: {
+      peel: ["hand", "peeler", "knife"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      mince: ["knife", "chopper", "cleaver", "paringKnife"],
+      slice: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"],
+      crush: ["mortarAndPestle", "knife"],
     },
-    equipments: ["kaldero", "knife", "pan", "bowl", "spoon"],
-  },
-  mainDish: {
-    ingredients: {
-      beef: {
-        slice: ["knife"],
-        stirFry: ["pan", "spatula"],
-      },
-      bellPepper: {
-        wash: ["hand", "water"],
-        slice: ["knife"],
-      },
-      onion: {
-        wash: ["hand", "water"],
-        slice: ["knife"],
-      },
-      soySauce: {
-        measure: ["spoon"],
-      },
-      garlic: {
-        peel: ["hand"],
-        chop: ["knife"],
-      },
-      shrimp: {
-        clean: ["hand", "water"],
-        peel: ["hand"],
-      },
-      butter: {
-        measure: ["spoon"],
-      },
-      pork: {
-        slice: ["knife"],
-        marinate: ["bowl", "spoon"],
-      },
-      vinegar: {
-        measure: ["spoon"],
-      },
-      sugar: {
-        measure: ["spoon"],
-      },
-      tomatoPaste: {
-        measure: ["spoon"],
-      },
-      rice: {
-        wash: ["hand", "water"],
-        cook: ["kaldero"],
-      },
-      egg: {
-        beat: ["bowl", "fork"],
-      },
-      springOnion: {
-        wash: ["hand", "water"],
-        chop: ["knife"],
-      },
-      cookingOil: {
-        pour: ["spoon"],
-      },
-      tofu: {
-        slice: ["knife"],
-      },
-      mushroom: {
-        wash: ["hand", "water"],
-        slice: ["knife"],
-      },
-      noodles: {
-        boil: ["kaldero"],
-        drain: ["strainer"],
-      },
-      chicken: {
-        chop: ["knife"],
-        boil: ["kaldero"],
-      },
+    sugar: {
+      measure: ["spoon", "measuringCup", "cup"],
+      sprinkle: ["hand", "spoon", "shaker"],
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
     },
-    equipments: [
-      "kaldero",
-      "knife",
-      "pan",
-      "spatula",
-      "bowl",
-      "fork",
-      "spoon",
-      "strainer",
-    ],
-  },
-  soup: {
-    ingredients: {
-      chicken: {
-        chop: ["knife"],
-        boil: ["pot"],
-      },
-      potato: {
-        wash: ["hand", "water"],
-        cut: ["knife"],
-      },
-      carrot: {
-        wash: ["hand", "water"],
-        cut: ["knife"],
-      },
-      onion: {
-        wash: ["hand", "water"],
-        slice: ["knife"],
-      },
-      garlic: {
-        peel: ["hand"],
-        chop: ["knife"],
-      },
-      fish: {
-        clean: ["hand", "water"],
-        slice: ["knife"],
-      },
-      cabbage: {
-        wash: ["hand", "water"],
-        chop: ["knife"],
-        peel: ["paringKnife"],
-      },
-      ginger: {
-        peel: ["knife"],
-        slice: ["knife"],
-      },
-      springOnion: {
-        wash: ["hand", "water"],
-        chop: ["knife"],
-      },
-      egg: {
-        beat: ["bowl", "fork"],
-      },
-      cornstarch: {
-        mix: ["bowl", "spoon"],
-      },
-      tofu: {
-        slice: ["knife"],
-      },
-      soySauce: {
-        measure: ["spoon"],
-      },
-      salt: {
-        measure: ["spoon"],
-      },
-      water: {
-        pour: ["cup"],
-      },
+    vinegar: {
+      measure: ["spoon", "measuringCup", "cup"],
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
     },
-    equipments: [
-      "knife",
-      "pan",
-      "bowl",
-      "fork",
-      "spoon",
-      "cup",
-      "Gloves",
-      "Apron",
-    ],
+    tomatoPaste: {
+      scoop: ["spoon", "ladle", "cup", "measuringCup"],
+      measure: ["spoon", "measuringCup", "cup"],
+      stir: ["spoon", "spatula"],
+      mix: ["bowl", "spoon"],
+    },
+    cornstarch: {
+      mix: ["bowl", "spoon"],
+    },
+    chiliFlakes: {
+      measure: ["spoon", "measuringCup", "cup"],
+      sprinkle: ["hand", "spoon", "shaker"],
+    },
+    soySauce: {
+      measure: ["spoon", "measuringCup", "cup"],
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
+    },
+    ginger: {
+      peel: ["knife", "peeler"],
+      slice: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      mince: ["knife", "chopper", "cleaver", "paringKnife"],
+      grate: ["grater", "zester"],
+      crush: ["mortarAndPestle", "knife"],
+    },
+    onion: {
+      peel: ["hand", "peeler", "knife"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      slice: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"],
+      mince: ["knife", "chopper", "cleaver", "paringKnife"],
+      grate: ["grater", "zester"],
+      crush: ["mortarAndPestle", "knife"],
+      wash: ["hand", "water", "sink", "bowl"],
+    },
+    oil: {
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
+      measure: ["spoon", "measuringCup", "cup"],
+    },
+    salt: {
+      measure: ["spoon", "measuringCup", "cup"],
+      sprinkle: ["hand", "spoon", "shaker"],
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
+      season: ["hand", "spoon", "shaker"],
+    },
+    butter: {
+      scoop: ["spoon", "ladle", "cup", "measuringCup"],
+      measure: ["spoon", "measuringCup", "cup"],
+      melt: ["pan"],
+      stir: ["spoon", "spatula"],
+    },
+    milk: {
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
+      measure: ["spoon", "measuringCup", "cup"],
+    },
+    cream: {
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
+      measure: ["spoon", "measuringCup", "cup"],
+    },
+    chicken: {
+      chop: ["knife", "cleaver", "paringKnife"],
+      slice: ["knife", "cleaver", "paringKnife"],
+      marinate: ["bowl", "spoon", "ziplocBag", "container"],
+      cook: ["pan", "pot", "kaldero"],
+      boil: ["pot", "kaldero"],
+      grill: ["grill", "oven"],
+      bake: ["oven"],
+      roast: ["oven"],
+      sear: ["pan", "spatula"],
+      stirFry: ["pan", "spatula"],
+      clean: ["hand", "sponge", "sink", "bowl"],
+      wash: ["hand", "water", "sink", "bowl"],
+      drain: ["strainer", "colander"],
+      portion: ["knife", "cleaver", "paringKnife"],
+      debone: ["knife", "paringKnife"],
+      skin: ["knife", "paringKnife"],
+      shred: ["hand", "fork"],
+      tenderize: ["meatMallet", "rollingPin"],
+      season: ["hand", "spoon", "shaker"],
+    },
+    pork: {
+      chop: ["knife", "cleaver", "paringKnife"],
+      slice: ["knife", "cleaver", "paringKnife"],
+      marinate: ["bowl", "spoon", "ziplocBag", "container"],
+      cook: ["pan", "pot", "kaldero"],
+      boil: ["pot", "kaldero"],
+      grill: ["grill", "oven"],
+      bake: ["oven"],
+      roast: ["oven"],
+      sear: ["pan", "spatula"],
+      stirFry: ["pan", "spatula"],
+      clean: ["hand", "sponge", "sink", "bowl"],
+      wash: ["hand", "water", "sink", "bowl"],
+      drain: ["strainer", "colander"],
+      portion: ["knife", "cleaver", "paringKnife"],
+      season: ["hand", "spoon", "shaker"],
+    },
+    tofu: {
+      slice: ["knife", "cleaver", "paringKnife"],
+      chop: ["knife", "cleaver", "paringKnife"],
+      dice: ["knife", "cleaver", "paringKnife"],
+      marinate: ["bowl", "spoon", "ziplocBag", "container"],
+      stirFry: ["pan", "spatula"],
+      cook: ["pan", "pot", "kaldero"],
+      boil: ["pot", "kaldero"],
+      grill: ["grill", "oven"],
+      bake: ["oven"],
+      roast: ["oven"],
+      sear: ["pan", "spatula"],
+      drain: ["strainer", "colander"],
+      crumble: ["hand", "fork"],
+      blend: ["blender", "foodProcessor"],
+      mix: ["bowl", "spoon"],
+      serve: ["spoon", "ladle"],
+      wash: ["hand", "water", "sink", "bowl"],
+      soak: ["bowl", "container"],
+    },
+    mushroom: {
+      wash: ["hand", "water", "sink", "bowl"],
+      slice: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      dice: ["knife", "chopper", "cleaver", "paringKnife"],
+      mince: ["knife", "chopper", "cleaver", "paringKnife"],
+      sauté: ["pan", "spatula"],
+      cook: ["pan", "pot", "kaldero"],
+      boil: ["pot", "kaldero"],
+      grill: ["grill", "oven"],
+      bake: ["oven"],
+      roast: ["oven", "pan"],
+      sear: ["pan", "spatula"],
+      stirFry: ["pan", "spatula"],
+      mix: ["bowl", "spoon"],
+      serve: ["spoon", "ladle"],
+      clean: ["hand", "sponge", "sink", "bowl"],
+      drain: ["strainer", "colander"],
+      sliceThin: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"],
+      crumble: ["hand", "fork"],
+      blend: ["blender", "foodProcessor"],
+    },
+    rice: {
+      wash: ["hand", "water", "sink", "bowl"],
+      cook: ["pot", "kaldero"],
+      boil: ["pot", "kaldero"],
+      stir: ["spoon", "spatula"],
+      fluff: ["fork", "spoon"],
+      measure: ["measuringCup", "cup"],
+      serve: ["spoon", "ladle"],
+      mix: ["bowl", "spoon"],
+      drain: ["strainer", "colander"],
+    },
+    noodles: {
+      boil: ["pot", "kaldero"],
+      cook: ["pot", "kaldero"],
+      drain: ["strainer", "colander"],
+      stir: ["spoon", "spatula"],
+      serve: ["spoon", "ladle"],
+      rinse: ["sink", "water", "strainer"],
+      measure: ["measuringCup", "cup"],
+    },
+    water: {
+      pour: ["spoon", "measuringCup", "cup", "bowl"],
+      measure: ["spoon", "measuringCup", "cup"],
+      boil: ["pot", "kaldero"],
+      cook: ["pot", "kaldero"],
+      rinse: ["sink", "strainer", "bowl"],
+      wash: ["hand", "sink", "bowl"],
+    },
+
+    bread: {
+      slice: ["knife", "breadSlicer", "paringKnife"],
+      toast: ["oven"],
+      serve: ["hand", "spoon", "ladle"],
+      butter: ["spoon", "knife"],
+    },
+
+    flour: {
+      measure: ["spoon", "measuringCup", "cup"],
+      sift: ["sieve"],
+      mix: ["bowl", "spoon"],
+      serve: ["spoon", "ladle"],
+    },
+
+    "plain Flour": {
+      measure: ["spoon", "measuringCup", "cup"],
+      mix: ["bowl", "spoon"],
+    },
+
+    avocado: {
+      wash: ["hand", "water", "sink", "bowl"],
+      cut: ["knife", "cleaver", "paringKnife"],
+      slice: ["knife", "mandolineSlicer", "paringKnife"],
+      mash: ["fork", "bowl"],
+      serve: ["spoon", "hand"],
+    },
+
+    berries: {
+      wash: ["hand", "water", "sink", "bowl"],
+      serve: ["hand", "spoon", "ladle"],
+      mix: ["bowl", "spoon"],
+    },
+
+    lemon: {
+      wash: ["hand", "water", "sink", "bowl"],
+      slice: ["knife", "paringKnife"],
+      juice: ["hand", "squeezer"], // only if “squeezer” is in tools
+      zest: ["zester", "grater"],
+      serve: ["spoon", "hand"],
+    },
+
+    olives: {
+      rinse: ["hand", "water", "sink", "bowl"],
+      slice: ["knife", "paringKnife", "breadSlicer"],
+      pit: ["hand", "knife"],
+      serve: ["hand", "spoon"],
+    },
+
+    cheese: {
+      slice: ["knife", "paringKnife", "cheeseSlicer"], // if cheeseSlicer exists
+      grate: ["grater"],
+      melt: ["pan", "oven"],
+      serve: ["hand", "spoon", "ladle"],
+    },
+
+    swissCheese: {
+      slice: ["knife", "paringKnife"],
+      serve: ["hand", "spoon"],
+    },
+
+    tomato: {
+      wash: ["hand", "water", "sink", "bowl"],
+      slice: ["knife", "mandolineSlicer", "paringKnife", "breadSlicer"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      dice: ["knife", "chopper", "cleaver", "paringKnife"],
+      serve: ["hand", "spoon", "ladle"],
+    },
+
+    parsley: {
+      wash: ["hand", "water", "sink", "bowl"],
+      chop: ["knife", "chopper", "paringKnife"],
+      mince: ["knife", "chopper", "paringKnife"],
+      garnish: ["hand"],
+    },
+
+    cabbage: {
+      wash: ["hand", "water", "sink", "bowl"],
+      slice: ["knife", "mandolineSlicer", "paringKnife"],
+      chop: ["knife", "cleaver", "paringKnife"],
+      shred: ["hand", "fork"],
+      serve: ["hand", "spoon"],
+    },
+
+    carrot: {
+      wash: ["hand", "water", "sink", "bowl"],
+      peel: ["peeler", "paringKnife", "knife"],
+      slice: ["knife", "mandolineSlicer", "paringKnife", "breadSlicer"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      julienne: ["knife", "mandolineSlicer", "paringKnife"],
+      grate: ["grater"],
+      serve: ["hand", "spoon", "ladle"],
+    },
+
+    cucumber: {
+      wash: ["hand", "water", "sink", "bowl"],
+      peel: ["peeler", "paringKnife", "knife"],
+      slice: ["knife", "mandolineSlicer", "paringKnife", "breadSlicer"],
+      dice: ["knife", "chopper", "paringKnife"],
+      serve: ["hand", "spoon", "ladle"],
+    },
+
+    pepper: {
+      wash: ["hand", "water", "sink", "bowl"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      slice: ["knife", "mandolineSlicer", "paringKnife"],
+      serve: ["hand", "spoon", "ladle"],
+    },
+    potato: {
+      wash: ["hand", "water", "sink", "bowl"],
+      peel: ["peeler", "paringKnife", "knife"],
+      cut: ["knife", "cutter", "cleaver", "paringKnife"],
+      dice: ["knife", "chopper", "cleaver", "paringKnife"],
+      slice: ["knife", "mandolineSlicer", "breadSlicer", "paringKnife"],
+      chop: ["knife", "chopper", "cleaver", "paringKnife"],
+      roast: ["oven", "pan"],
+      bake: ["oven"],
+      fry: ["pan"],
+      boil: ["pot", "kaldero"],
+      season: ["hand", "spoon", "shaker"],
+    },
   },
 };
+
+// export const VALID_PROCEDURES = {
+//   sauce: {
+//     ingredients: {
+//       garlic: {
+//         peel: ["hand"],
+//         chop: ["knife"],
+//       },
+//       sugar: {
+//         measure: ["spoon"],
+//       },
+//       vinegar: {
+//         measure: ["spoon"],
+//         sprinkle: ["shaker"],
+//       },
+//       tomatoPaste: {
+//         scoop: ["spoon"],
+//       },
+//       cornstarch: {
+//         mix: ["bowl", "spoon"],
+//       },
+//       chiliFlakes: {
+//         measure: ["spoon"],
+//       },
+//       soySauce: {
+//         measure: ["spoon"],
+//       },
+//       ginger: {
+//         peel: ["knife"],
+//         slice: ["knife"],
+//       },
+//       springOnion: {
+//         wash: ["hand", "water"],
+//         chop: ["knife"],
+//       },
+//       oil: {
+//         pour: ["spoon"],
+//       },
+//       salt: {
+//         measure: ["spoon"],
+//       },
+//       butter: {
+//         scoop: ["spoon"],
+//       },
+//       milkOrCream: {
+//         pour: ["cup"],
+//       },
+//       onion: {
+//         peel: ["hand"],
+//         chop: ["knife"],
+//       },
+//     },
+//     equipments: ["kaldero", "knife", "pan", "bowl", "spoon"],
+//   },
+//   mainDish: {
+//     ingredients: {
+//       beef: {
+//         slice: ["knife"],
+//         stirFry: ["pan", "spatula"],
+//       },
+//       bellPepper: {
+//         wash: ["hand", "water"],
+//         slice: ["knife"],
+//       },
+//       onion: {
+//         wash: ["hand", "water"],
+//         slice: ["knife"],
+//       },
+//       soySauce: {
+//         measure: ["spoon"],
+//       },
+//       garlic: {
+//         peel: ["hand"],
+//         chop: ["knife"],
+//       },
+//       shrimp: {
+//         clean: ["hand", "water"],
+//         peel: ["hand"],
+//       },
+//       butter: {
+//         measure: ["spoon"],
+//       },
+//       pork: {
+//         slice: ["knife"],
+//         marinate: ["bowl", "spoon"],
+//       },
+//       vinegar: {
+//         measure: ["spoon"],
+//       },
+//       sugar: {
+//         measure: ["spoon"],
+//       },
+//       tomatoPaste: {
+//         measure: ["spoon"],
+//       },
+//       rice: {
+//         wash: ["hand", "water"],
+//         cook: ["kaldero"],
+//       },
+//       egg: {
+//         beat: ["bowl", "fork"],
+//       },
+//       springOnion: {
+//         wash: ["hand", "water"],
+//         chop: ["knife"],
+//       },
+//       cookingOil: {
+//         pour: ["spoon"],
+//       },
+//       tofu: {
+//         slice: ["knife"],
+//       },
+//       mushroom: {
+//         wash: ["hand", "water"],
+//         slice: ["knife"],
+//       },
+//       noodles: {
+//         boil: ["kaldero"],
+//         drain: ["strainer"],
+//       },
+//       chicken: {
+//         chop: ["knife"],
+//         boil: ["kaldero"],
+//       },
+//     },
+//     equipments: [
+//       "kaldero",
+//       "knife",
+//       "pan",
+//       "spatula",
+//       "bowl",
+//       "fork",
+//       "spoon",
+//       "strainer",
+//     ],
+//   },
+//   soup: {
+//     ingredients: {
+//       chicken: {
+//         chop: ["knife"],
+//         boil: ["pot"],
+//       },
+//       potato: {
+//         wash: ["hand", "water"],
+//         cut: ["knife"],
+//       },
+//       carrot: {
+//         wash: ["hand", "water"],
+//         cut: ["knife"],
+//       },
+//       onion: {
+//         wash: ["hand", "water"],
+//         slice: ["knife"],
+//       },
+//       garlic: {
+//         peel: ["hand"],
+//         chop: ["knife"],
+//       },
+//       fish: {
+//         clean: ["hand", "water"],
+//         slice: ["knife"],
+//       },
+//       cabbage: {
+//         wash: ["hand", "water"],
+//         chop: ["knife"],
+//         peel: ["paringKnife"],
+//       },
+//       ginger: {
+//         peel: ["knife"],
+//         slice: ["knife"],
+//       },
+//       springOnion: {
+//         wash: ["hand", "water"],
+//         chop: ["knife"],
+//       },
+//       egg: {
+//         beat: ["bowl", "fork"],
+//       },
+//       cornstarch: {
+//         mix: ["bowl", "spoon"],
+//       },
+//       tofu: {
+//         slice: ["knife"],
+//       },
+//       soySauce: {
+//         measure: ["spoon"],
+//       },
+//       salt: {
+//         measure: ["spoon"],
+//       },
+//       water: {
+//         pour: ["cup"],
+//       },
+//     },
+//     equipments: [
+//       "knife",
+//       "pan",
+//       "bowl",
+//       "fork",
+//       "spoon",
+//       "cup",
+//       "Gloves",
+//       "Apron",
+//     ],
+//   },
+// };
 
 export const soupCombination = [
   //? SOUP

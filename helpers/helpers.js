@@ -21,7 +21,9 @@ export const validateTypeAndCategory = (type, category) => {
   if (!allowedTypes[type].includes(category)) {
     return {
       valid: false,
-      message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedTypes[type].join(", ")}.`,
+      message: `Invalid category "${category}" for type "${type}". Must be one of ${allowedTypes[
+        type
+      ].join(", ")}.`,
     };
   }
 
@@ -47,50 +49,69 @@ export const validateSubmissionLimit = async (studentId, category) => {
   return { valid: true };
 };
 
-export const validateProcedures = (category, procedureSteps, equipments) => {
-  const rules = VALID_PROCEDURES[category];
+export const validateProcedures = (procedureSteps) => {
   const invalidReasons = [];
   let procedureStatus = "valid";
 
-  if (!rules) {
+  if (!VALID_PROCEDURES || !VALID_PROCEDURES.ingredients) {
     return {
       status: "inappropriate",
-      reasons: [`Category "${category}" is not in the valid procedures list.`],
+      reasons: ["VALID_PROCEDURES.ingredients is not defined."],
     };
   }
 
   procedureSteps.forEach((step, stepIndex) => {
-    step.ingredients.forEach((ingName) => {
-      const normalizedIng = ingName.toLowerCase();
-      const allowedIngredient = rules.ingredients[normalizedIng];
+    let stepHasError = false;
 
-      if (!allowedIngredient) {
+    step.ingredients.forEach((ingName) => {
+      const normalizedIng = ingName.trim().toLowerCase();
+      const ingredientRules = VALID_PROCEDURES.ingredients[normalizedIng];
+
+      if (!ingredientRules) {
         procedureStatus = "inappropriate";
         invalidReasons.push(
-          `Step ${stepIndex + 1}: Ingredient "${ingName}" is not allowed in "${category}".`
+          `Step ${
+            stepIndex + 1
+          }: Ingredient "${ingName}" is not listed in VALID_PROCEDURES.`
         );
+        stepHasError = true;
         return;
       }
 
-      const allowedTools = allowedIngredient[step.action];
+      const allowedTools = ingredientRules[step.action];
       if (!allowedTools) {
         procedureStatus = "inappropriate";
         invalidReasons.push(
-          `Step ${stepIndex + 1}: Action "${step.action}" is not valid for "${ingName}".`
+          `Step ${stepIndex + 1}: Action "${
+            step.action
+          }" is not valid for ingredient "${ingName}".`
         );
-      } else if (step.tool && !allowedTools.includes(step.tool)) {
+        stepHasError = true;
+        return;
+      }
+
+      if (step.tool && !allowedTools.includes(step.tool)) {
         procedureStatus = "inappropriate";
         invalidReasons.push(
-          `Step ${stepIndex + 1}: Tool "${step.tool}" is not valid for action "${step.action}" on "${ingName}".`
+          `Step ${stepIndex + 1}: Tool "${
+            step.tool
+          }" is not valid for action "${
+            step.action
+          }" on ingredient "${ingName}".`
         );
+        stepHasError = true;
       }
     });
-  });
 
-  equipments.forEach((eq) => {
-    if (!rules.equipments.includes(eq.name)) {
-      procedureStatus = "inappropriate";
-      invalidReasons.push(`Equipment "${eq.name}" is not allowed in "${category}".`);
+    // If no error in this step, add a sentence summary
+    if (!stepHasError) {
+      const ingList = step.ingredients.map((ing) => `"${ing}"`).join(", ");
+      const sentence = `✅ Step ${stepIndex + 1}: Successfully performed "${
+        step.action
+      }" on ${ingList} using "${step.tool}", resulting in "${
+        step.status
+      }" status.`;
+      invalidReasons.push(sentence);
     }
   });
 
