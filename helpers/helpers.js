@@ -1,5 +1,5 @@
 import Coc from "../schema/CocModel.js";
-import { VALID_PROCEDURES } from "../utils/cloudinary.js";
+import { VALID_ACTION_INGREDIENTS } from "../utils/cloudinary.js";
 
 export const capitalizeWords = (str) =>
   str
@@ -128,121 +128,65 @@ export const validateSubmissionLimit = async (studentId, category) => {
 //   return { status: procedureStatus, reasons: invalidReasons };
 // };
 
-export const validateIngredients = (ingredients) => {
+export const validateIngredients = (ingredients = []) => {
   const invalidReasons = [];
-  let status = "valid";
+  let procedureStatus = "valid";
 
-  if (!Array.isArray(ingredients) || ingredients.length === 0) {
+  if (!VALID_ACTION_INGREDIENTS || !VALID_ACTION_INGREDIENTS.ingredients) {
     return {
       status: "inappropriate",
-      reasons: ["Ingredients list is missing or empty."],
+      reasons: ["VALID_ACTION_INGREDIENTS.ingredients is not defined."],
     };
   }
 
-  ingredients.forEach((ingredient) => {
-    if (!ingredient.name) {
-      status = "inappropriate";
-      invalidReasons.push("Ingredient is missing a name.");
-    }
+  ingredients.forEach((ingredient, ingIndex) => {
+    const ingName = ingredient.name?.trim().toLowerCase();
+    const rules = VALID_ACTION_INGREDIENTS.ingredients[ingName];
 
-    if (!ingredient.actions || ingredient.actions.length === 0) {
-      status = "inappropriate";
+    if (!rules) {
+      procedureStatus = "inappropriate";
       invalidReasons.push(
-        `Ingredient "${ingredient.name}" has no actions defined.`
+        `Ingredient "${ingredient.name}" (index ${ingIndex}) is not in the list of valid ingredients.`
       );
       return;
     }
 
-    ingredient.actions.forEach((actionObj) => {
-      if (!actionObj.action) {
-        status = "inappropriate";
+    if (!ingredient.actions || !Array.isArray(ingredient.actions)) {
+      procedureStatus = "inappropriate";
+      invalidReasons.push(
+        `Ingredient "${ingredient.name}" has no valid actions array.`
+      );
+      return;
+    }
+
+    ingredient.actions.forEach((actionObj, actionIndex) => {
+      const action = actionObj.action?.toLowerCase();
+      const tool = actionObj.tool?.toLowerCase();
+
+      if (!rules[action]) {
+        procedureStatus = "inappropriate";
         invalidReasons.push(
-          `Ingredient "${ingredient.name}" is missing an action.`
+          `Action "${action}" is not valid for ingredient "${ingredient.name}".`
         );
+        return;
       }
-      if (!actionObj.tool) {
-        status = "inappropriate";
+
+      if (!rules[action].includes(tool)) {
+        procedureStatus = "inappropriate";
         invalidReasons.push(
-          `Ingredient "${ingredient.name}" action "${actionObj.action}" is missing a tool.`
+          `Tool "${tool}" is not valid for action "${action}" on ingredient "${ingredient.name}".`
         );
+        return;
       }
-      if (!actionObj.status) {
-        status = "inappropriate";
-        invalidReasons.push(
-          `Ingredient "${ingredient.name}" action "${actionObj.action}" is missing a status.`
-        );
-      }
+
+      invalidReasons.push(
+        `✅ Ingredient "${ingredient.name}" → action "${action}" with tool "${tool}" is valid.`
+      );
     });
   });
 
-  return { status, reasons: invalidReasons };
+  return {
+    status: procedureStatus,
+    reasons: invalidReasons,
+  };
 };
-
-// export const validateProcedures = (procedureSteps) => {
-//   const invalidReasons = [];
-//   let procedureStatus = "valid";
-
-//   if (!VALID_PROCEDURES || !VALID_PROCEDURES.ingredients) {
-//     return {
-//       status: "inappropriate",
-//       reasons: ["VALID_PROCEDURES.ingredients is not defined."],
-//     };
-//   }
-
-//   procedureSteps.forEach((step, stepIndex) => {
-//     let stepHasError = false;
-
-//     step.ingredients.forEach((ingName) => {
-//       const normalizedIng = ingName.trim().toLowerCase();
-//       const ingredientRules = VALID_PROCEDURES.ingredients[normalizedIng];
-
-//       if (!ingredientRules) {
-//         procedureStatus = "inappropriate";
-//         invalidReasons.push(
-//           `Step ${
-//             stepIndex + 1
-//           }: Ingredient "${ingName}" is not listed in VALID_PROCEDURES.`
-//         );
-//         stepHasError = true;
-//         return;
-//       }
-
-//       const allowedTools = ingredientRules[step.action];
-//       if (!allowedTools) {
-//         procedureStatus = "inappropriate";
-//         invalidReasons.push(
-//           `Step ${stepIndex + 1}: Action "${
-//             step.action
-//           }" is not valid for ingredient "${ingName}".`
-//         );
-//         stepHasError = true;
-//         return;
-//       }
-
-//       if (step.tool && !allowedTools.includes(step.tool)) {
-//         procedureStatus = "inappropriate";
-//         invalidReasons.push(
-//           `Step ${stepIndex + 1}: Tool "${
-//             step.tool
-//           }" is not valid for action "${
-//             step.action
-//           }" on ingredient "${ingName}".`
-//         );
-//         stepHasError = true;
-//       }
-//     });
-
-//     // If no error in this step, add a sentence summary
-//     if (!stepHasError) {
-//       const ingList = step.ingredients.map((ing) => `"${ing}"`).join(", ");
-//       const sentence = `✅ Step ${stepIndex + 1}: Successfully performed "${
-//         step.action
-//       }" on ${ingList} using "${step.tool}", resulting in "${
-//         step.status
-//       }" status.`;
-//       invalidReasons.push(sentence);
-//     }
-//   });
-
-//   return { status: procedureStatus, reasons: invalidReasons };
-// };

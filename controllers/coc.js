@@ -19,25 +19,32 @@ export const createDish = async (req, res) => {
       procedureSteps = [],
     } = req.body;
 
+    // Validate type/category combo
     const typeCategoryCheck = validateTypeAndCategory(type, category);
     if (!typeCategoryCheck.valid) {
-      return res
-        .status(400)
-        .json({ success: false, message: typeCategoryCheck.message });
+      return res.status(400).json({
+        success: false,
+        message: typeCategoryCheck.message,
+      });
     }
 
+    // Validate student submission limit
     const submissionCheck = await validateSubmissionLimit(studentId, category);
     if (!submissionCheck.valid) {
-      return res
-        .status(400)
-        .json({ success: false, message: submissionCheck.message });
+      return res.status(400).json({
+        success: false,
+        message: submissionCheck.message,
+      });
     }
 
+    // Validate procedure steps
     const { status: procedureStatus, reasons: invalidReasons } =
-      validateIngredients(ingredients);
+      validateIngredients(ingredients); // ✅ NOT procedureSteps
 
+    // Get image from matched category/ingredients combo (optional)
     const matchedCombo = getMatchedCombination(category, ingredients);
 
+    // Save to DB
     const newCoc = new Coc({
       type,
       studentId,

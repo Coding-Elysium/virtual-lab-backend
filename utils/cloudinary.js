@@ -87,7 +87,7 @@ export const actionIngredientsTools = [
   { name: "dishCloth", category: "cleaning" },
 ];
 
-export const VALID_PROCEDURES = {
+export const VALID_ACTION_INGREDIENTS = {
   ingredients: {
     garlic: {
       peel: ["hand", "peeler", "knife"],
