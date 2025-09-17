@@ -607,8 +607,7 @@ export const soupCombination = [
     // name: "fish soup",
     type: "soup",
     contains: ["fish", "water", "ginger"],
-    image:
-      "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/fish_soup_eqlcfh.png",
+    image:"https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/fish_soup_eqlcfh.png",
   },
   {
     // name: "chicken soup",
@@ -759,39 +758,33 @@ export const getMatchedCombination = (category, ingredients) => {
       return null;
   }
 
+  // Find the first recipe that contains at least ONE selected ingredient
   for (const combo of combinationList) {
-    const requiredIngredients = combo.contains
-      .map((i) => i.toLowerCase())
-      .sort();
+    const requiredIngredients = combo.contains.map((i) => i.toLowerCase());
 
-    const isMatch = requiredIngredients.every((ing) =>
+    const hasMatch = requiredIngredients.some((ing) =>
       ingredientNames.includes(ing)
     );
 
-    if (isMatch) {
-      return combo;
+    if (hasMatch) {
+      return combo; // return the first matching dish
     }
   }
 
+  // fallback if nothing matches
   const fallbackCombinations = {
     mainDish: {
-      // name: "Basic Dish",
       type: "mainDish",
-      // contains: ["tomato paste", "garlic", "onion", "sugar"],
       image:
         "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/chicken_adobo_thpfhn.png",
     },
     sauce: {
-      // name: "Basic Sauce",
       type: "sauce",
-      // contains: ["tomato paste", "garlic", "onion", "sugar"],
       image:
         "https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
     },
     soup: {
-      // name: "Basic Soup",
       type: "soup",
-      // contains: ["tomato paste", "garlic", "onion", "sugar"],
       image:
         "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/beef_soup_ihgwhv.png",
     },
@@ -799,6 +792,62 @@ export const getMatchedCombination = (category, ingredients) => {
 
   return fallbackCombinations[category] || null;
 };
+
+
+// export const getMatchedCombination = (category, ingredients) => {
+//   const ingredientNames = ingredients
+//     .map((ing) => ing.name.toLowerCase())
+//     .sort();
+
+//   let combinationList = [];
+
+//   switch (category) {
+//     case "mainDish":
+//       combinationList = mainDishCombination;
+//       break;
+//     case "soup":
+//       combinationList = soupCombination;
+//       break;
+//     case "sauce":
+//       combinationList = sauceCombination;
+//       break;
+//     default:
+//       return null;
+//   }
+
+//   for (const combo of combinationList) {
+//     const requiredIngredients = combo.contains
+//       .map((i) => i.toLowerCase())
+//       .sort();
+
+//     const isMatch = requiredIngredients.every((ing) =>
+//       ingredientNames.includes(ing)
+//     );
+
+//     if (isMatch) {
+//       return combo;
+//     }
+//   }
+
+//   const fallbackCombinations = {
+//     mainDish: {
+//       type: "mainDish",
+//       image:
+//         "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753804253/chicken_adobo_thpfhn.png",
+//     },
+//     sauce: {
+//       type: "sauce",
+//       image:"https://res.cloudinary.com/dgvi2di6t/image/upload/v1754823051/sauce_4_urj4te.png",
+//     },
+//     soup: {
+//       type: "soup",
+//       image:
+//         "https://res.cloudinary.com/dgvi2di6t/image/upload/v1753802663/beef_soup_ihgwhv.png",
+//     },
+//   };
+
+//   return fallbackCombinations[category] || null;
+// };
 
 // export const actionTools = [
 //   { name: "chop", tools: ["knife", "chopper", "cleaver", "paringKnife"] },

@@ -15,14 +15,15 @@ import categoryRoute from "./routes/categoryRoute.js";
 import actionIngredientsRoute from "./routes/actionIngredientsRoute.js";
 import actionToolsRoute from "./routes/actionToolsRoute.js";
 import kitchenToolsRoute from "./routes/kitchenToolsRoute.js";
+import commonIngredientRoute from "./routes/commonIngredientsRoute.js";
 import cors from "cors";
 import helmet from "helmet";
-import ActionToolsModel from "./schema/ActionToolsModal.js";
-import {
-  actionIngredientsTools,
-  ingredientsAction,
-} from "./utils/cloudinary.js";
-import IngredientActionModel from "./schema/ActionIngredientsModel.js";
+// import ActionToolsModel from "./schema/ActionToolsModal.js";
+// import {
+//   actionIngredientsTools,
+//   ingredientsAction,
+// } from "./utils/cloudinary.js";
+// import IngredientActionModel from "./schema/ActionIngredientsModel.js";
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ app.use("/categories", categoryRoute);
 app.use("/action-ingredients", actionIngredientsRoute);
 app.use("/action-tools", actionToolsRoute);
 app.use("/kitchen-tools", kitchenToolsRoute);
+app.use("/common-ingredients", commonIngredientRoute)
 
 mongoose
   .connect(process.env.MONGO_URI, {
